@@ -1,0 +1,39 @@
+/**
+ * MODEL INPUT FILE
+ * Stardard c comments like "//" are used. The program will skip the line after "//".
+ * Input information for any variable is organized as:
+ *
+ * "variable_name [option1, option2,...] = index : value;"
+ *
+ * variable_name : lowercase c name identifier, long names are sperated by "_".
+ * option        : different options of this variable. If it is only a choice, it is encapsulated
+ *                 by "". Otherwise it could be anything that indicates this option. Different 
+ *                 options are sperated by comma(,). If there is only one option in the square 
+ *                 paranthesis, the literal meaning of this option is not read by the program. It 
+ *                 is usually used for incation of units.
+ * index         : indicate which option to use. It uses standard c convection, 0 being the first.
+ * value         : value of the variable. It only exists when the option is not encapsulated by "".
+ */
+
+// domain
+bottom_pressure [pa] = 100.E5;
+top_pressure [pa] = 0.1E5;
+reference_pressure [pa] = 1.E5;
+lowest_latitude [deg] = 30.;
+highest_latitude [deg] = 60.;
+lowest_longitude [deg] = -180.;
+highest_longitude [deg] = 180.;
+rotation_period [h] = 9.925;
+mean_radius [m] = 69911.E3;
+mean_latitude [deg] = 45.;
+mean_gravity [m/s^2] = 24.79;
+number_of_vertical_layers [] = 1;
+number_of_latitude_grids [] = 8;
+number_of_longitude_grids [] = 8;
+
+
+// time control YYYY-MM-DD:hh:mm:ss
+start_time [YYYY-MM-DD:hh:mm:ss, "Current", "Previous"] = 0 : "0000-01-01:0:0:0";
+time_step [s] = 600.;
+total_time_steps [] = 100;
+
