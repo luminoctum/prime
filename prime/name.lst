@@ -19,8 +19,8 @@
 bottom_pressure [pa] = 100.E5;
 top_pressure [pa] = 0.1E5;
 reference_pressure [pa] = 1.E5;
-lowest_latitude [deg] = 30.;
-highest_latitude [deg] = 60.;
+lowest_latitude [deg] = -90.;
+highest_latitude [deg] = 90.;
 lowest_longitude [deg] = -180.;
 highest_longitude [deg] = 180.;
 rotation_period [h] = 9.925;
@@ -28,8 +28,8 @@ mean_radius [m] = 69911.E3;
 mean_latitude [deg] = 45.;
 mean_gravity [m/s^2] = 24.79;
 number_of_vertical_layers [] = 1;
-number_of_latitude_grids [] = 8;
-number_of_longitude_grids [] = 8;
+number_of_latitude_grids [] = 16;
+number_of_longitude_grids [] = 16;
 
 
 // time control YYYY-MM-DD:hh:mm:ss

@@ -31,8 +31,6 @@ protected:
 	ntiles; /**< total number of tiles*/
 	std::vector<Grid> tile; /**< a tile is a subgrid of Patch */
 
-	PatchGrid& redirect();
-
 public:
 	PatchGrid();
 
@@ -68,6 +66,9 @@ public:
 	inline Grid& operator[](int p) {
 		return tile[p];
 	}
+
+protected:
+	PatchGrid& redirect();
 
 };
 

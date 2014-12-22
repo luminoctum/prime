@@ -11,7 +11,6 @@
 #include <iostream>
 #include <iomanip>
 #include <vector>
-#include <array>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>

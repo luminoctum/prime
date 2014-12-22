@@ -47,7 +47,7 @@ Grid::Grid(const Grid &grid) :
 				grid.nyh), nzh(grid.nzh), shift1d(grid.shift1d), shift2d(
 				grid.shift2d), shift3d(grid.shift3d), spec(grid.spec), boundary(
 				grid.boundary) {
-	std::cout << "Grid copy constructor called." << std::endl;
+	//std::cout << "Grid copy constructor called." << std::endl;
 	if (spec & abstract) {
 		redirect();
 	} else {
@@ -102,12 +102,12 @@ Grid::Grid(const Configure& config, GridSpec gs) :
 }
 
 Grid::~Grid() {
-	std::cout << "Grid deallocated" << std::endl;
+	//std::cout << "Grid deallocated" << std::endl;
 	unmake();
 }
 
 Grid& Grid::operator=(const Grid &grid) {
-	std::cout << "Grid assignment operator is called" << std::endl;
+	//std::cout << "Grid assignment operator is called" << std::endl;
 	if (this == &grid)
 		return *this;
 	lonbot = grid.lonbot;
@@ -180,7 +180,7 @@ Grid& Grid::make() {
 Grid& Grid::unmake() {
 	if (spec & abstract)
 		return *this;
-	std::cout << "grid unmade" << std::endl;
+	//std::cout << "grid unmade" << std::endl;
 	delete[] lon;
 	delete[] rlon;
 	delete[] mlon;

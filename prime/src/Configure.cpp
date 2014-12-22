@@ -43,7 +43,7 @@ Configure::Configure(const Configure &co) :
 		opcount(co.opcount), opname_size(co.opname_size), opchoice_size(
 				co.opchoice_size), opvalue_size(co.opvalue_size), max_size(
 				co.max_size) {
-	std::cout << "Configure copy constructor is called" << std::endl;
+	//std::cout << "Configure copy constructor is called" << std::endl;
 
 	preallocate_memory();
 
@@ -60,12 +60,12 @@ Configure::Configure(const Configure &co) :
 }
 
 Configure::~Configure() {
-	std::cout << "Configure destructor is called" << std::endl;
+	//std::cout << "Configure destructor is called" << std::endl;
 	clear_memory();
 }
 
 Configure& Configure::operator=(const Configure &co) {
-	std::cout << "Configure assignment operator is called" << std::endl;
+	//std::cout << "Configure assignment operator is called" << std::endl;
 	if (this == &co)
 		return *this;
 	opcount = co.opcount;
