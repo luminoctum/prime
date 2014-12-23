@@ -7,18 +7,6 @@
 
 #include "PatchVariable.h"
 
-std::ostream &operator<<(std::ostream &os, PatchVariable &var) {
-	os << "-------------------PatchVariable Information Begin-----------------"
-			<< std::endl;
-	for (int p = 0; p < var.ntiles; p++) {
-		os << "Tile # " << p << ": " << std::endl << var.tile[p] << std::endl;
-	}
-	os << "-------------------PatchVariable Information End-----------------"
-			<< std::endl;
-
-	return os;
-}
-
 PatchVariable::PatchVariable(){
 }
 

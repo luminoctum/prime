@@ -8,16 +8,17 @@
 
 #include "mpi.h"
 #include <iostream>
+#include <fstream>
 #include "Configure.h"
-#include "PatchVariable.h"
 #include "Halo.h"
-#include "DistGrid.h"
+#include "DistVariable.h"
 using namespace std;
 
 
 int main(int argc, char *argv[]) {
 	MPI_Init(&argc, &argv);
 
+    char filename[80];
 	int size, rank, nprocs[2], isperiodic[2];
 	MPI_Comm comm;
 
@@ -31,10 +32,17 @@ int main(int argc, char *argv[]) {
 	Configure config("name.lst");
 	PatchGrid domain(config);
 	DistGrid grid(domain, comm);
+	grid.split(2,2);
+	//DistVariable psi(grid, "psi", "streamfunction", "m^2/s");
+	//psi.clear_all().set_random_int();
 
-	printf("This is %d of %d\n", rank, size);
-	cout << grid << endl;
-	cout << (Grid)grid << endl;
+    ofstream output;
+    sprintf(filename, "output-%d.txt", rank);
+    output.open(filename);
+
+	output << grid << endl;
+    
+    output.close();
 
 	MPI_Finalize();
 	return 0;

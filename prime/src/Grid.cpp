@@ -7,35 +7,13 @@
 
 #include "Grid.h"
 
-std::ostream &operator<<(std::ostream &os, const Grid &grid) {
-	os << "-------------------Grid Information Begin-----------------"
-			<< std::endl;
-	os << "longitude: [" << grid.lonbot << ":" << grid.dlon << ":"
-			<< grid.lontop << "], nx = " << grid.nx << ", nxh = " << grid.nxh
-			<< ", dx = " << grid.dx / 1.E3 << " km" << std::endl;
-	os << "latitude: [" << grid.latbot << ":" << grid.dlat << ":" << grid.lattop
-			<< "], ny = " << grid.ny << ", nyh = " << grid.nyh << ", dy = "
-			<< grid.dy / 1.E3 << " km" << std::endl;
-	os << "vertical: Log[" << grid.pbot << ":" << exp(grid.dlnp) << ":"
-			<< grid.ptop << "], nz = " << grid.nz << ", nzh = " << grid.nzh
-			<< ", dz = " << grid.dz / 1.E3 << " km" << std::endl;
-	os << "number of time steps stored: " << grid.nt << std::endl;
-	os << "Grid specifics: " << grid.spec << std::endl;
-	os << "Boundary condition: 0x" << std::hex << std::setw(6)
-			<< std::setfill('0') << grid.boundary << std::endl << std::dec
-			<< std::setfill(' ');
-	os << "-------------------Grid Information End-----------------"
-			<< std::endl;
-
-	return os;
-}
-
 Grid::Grid() :
 		lonbot(0), lontop(0), dlon(0), dx(0), latbot(0), lattop(0), dlat(0), dy(
 				0), pbot(0), ptop(0), pref(0), dlnp(0), dz(0), radius0(0), lat0(
 				0), lon(0), rlon(0), mlon(0), lat(0), rlat(0), mlat(0), ptol(0), nt(
 				0), nx(0), ny(0), nz(0), nh(0), nxh(0), nyh(0), nzh(0), shift1d(
-				0), shift2d(0), shift3d(0), spec(abstract), boundary(0) {
+				0), shift2d(0), shift3d(0), spec(abstract), boundary{{ 0, 0,
+				0, 0, 0, 0 }} {
 }
 
 Grid::Grid(const Grid &grid) :
@@ -57,8 +35,8 @@ Grid::Grid(const Grid &grid) :
 }
 
 Grid::Grid(const Configure& config, GridSpec gs) :
-		lon(0), rlon(0), mlon(0), lat(0), rlat(0), mlat(0), ptol(0), spec(gs), boundary(
-				0) {
+		lon(0), rlon(0), mlon(0), lat(0), rlat(0), mlat(0), ptol(0), spec(gs), boundary {
+				{ 0, 0, 0, 0, 0, 0 } } {
 	config.get_entry("lowest_latitude", &latbot);
 	config.get_entry("highest_latitude", &lattop);
 	config.get_entry("lowest_longitude", &lonbot);
@@ -98,7 +76,7 @@ Grid::Grid(const Configure& config, GridSpec gs) :
 	if (lattop == 90.)
 		spec |= isnpole;
 
-	boundary = 0x005421;
+	boundary = {{1,2,4,5,0,0}};
 }
 
 Grid::~Grid() {
@@ -222,7 +200,11 @@ Grid Grid::sub(int tx, int ty, int p) const {
 	result.shift2d = result.nxh * result.nyh;
 	result.shift1d = result.nxh;
 
-	result.boundary = 0;
+    if (i != 0) result.boundary[0] = 0;
+    if (i != tx - 1) result.boundary[1] = 0;
+    if (j != 0) result.boundary[2] = 0;
+    if (j != ty - 1) result.boundary[2] = 0;
+
 	result.redirect();
 
 	return result;

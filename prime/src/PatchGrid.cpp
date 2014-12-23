@@ -7,20 +7,6 @@
 
 #include "PatchGrid.h"
 
-std::ostream &operator<<(std::ostream &os, const PatchGrid &grid) {
-	os << "-------------------PatchGrid Information Begin-----------------"
-			<< std::endl;
-	os << "Number of tiles: " << grid.ntilex << " x " << grid.ntiley << " = "
-			<< grid.ntiles << std::endl;
-	for (int i = 0; i < grid.ntiles; i++) {
-		os << "Tile # " << i << ": " << std::endl;
-		os << grid.tile[i] << std::endl;
-	}
-	os << "-------------------PatchGrid Information End-----------------"
-			<< std::endl;
-	return os;
-}
-
 PatchGrid::PatchGrid() :
 		ntilex(0), ntiley(0), ntiles(0) {
 }

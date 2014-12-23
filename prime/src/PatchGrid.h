@@ -23,7 +23,20 @@
  *                            Grid being abstract.
  */
 class PatchGrid: public virtual Grid {
-	friend std::ostream &operator<<(std::ostream &, const PatchGrid &);
+    template<class STREAM>
+	friend STREAM &operator<<(STREAM &os, const PatchGrid &grid){
+    	os << "---------------PatchGrid Information Begin---------------"
+    			<< std::endl;
+    	os << "Number of tiles: " << grid.ntilex << " x " << grid.ntiley << " = "
+    			<< grid.ntiles << std::endl;
+    	for (int i = 0; i < grid.ntiles; i++) {
+    		os << "Tile # " << i << ": " << std::endl;
+    		os << grid.tile[i] << std::endl;
+    	}
+    	os << "----------------PatchGrid Information End----------------"
+    			<< std::endl;
+    	return os;
+    }
 
 protected:
 	int ntilex, /**< number of tiles in x-direction */

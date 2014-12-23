@@ -40,5 +40,5 @@ Halo::~Halo() {
 
 void Halo::update(Variable &var) {
 	for (int i = 0; i < 4; i++)
-		fix[i + ((var.get_boundary() & (15 << (i << 2))) >> (i << 2) << 2)](var);
+		fix[i + var.get_boundary(i) * 4](var);
 }

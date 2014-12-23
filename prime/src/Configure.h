@@ -20,7 +20,28 @@
  * Configure class manages the configuration of the model
  */
 class Configure {
-	friend std::ostream &operator<<(std::ostream &, Configure &);
+    template<class STREAM>
+	friend STREAM &operator<<(STREAM & os, Configure & co){
+    	os << "Total number of enties: " << co.opcount << std::endl
+    			<< "Size of option name array: " << co.opname_size << std::endl
+    			<< "Size of option choice array: " << co.opchoice_size << std::endl
+    			<< "Size of option value array: " << co.opvalue_size << std::endl;
+    	for (int i = 0; i <= 100; i++)
+    		printf("-");
+    	std::cout << std::endl;
+    	printf("|  %-38s%-20s%-40s|\n", "Entry name", "Entry choice",
+    			"Entry value");
+    	for (int i = 0; i <= 100; i++)
+    		printf("-");
+    	std::cout << std::endl;
+    	for (int i = 0; i < co.opcount; i++)
+    		printf("|  %-38s%-20d%-40s|\n", co.opname[i], co.opid[i],
+    				co.opvalue[i]);
+    	for (int i = 0; i <= 100; i++)
+    		printf("-");
+    	std::cout << std::endl;
+    	return os;
+    };
 
 public:
 	int opcount, /**< number of configuration entries */

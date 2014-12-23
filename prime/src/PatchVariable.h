@@ -19,8 +19,19 @@
  * sense that each "tile" is not strictly a Grid. nxy, nyz, nxyz do not
  * represent the normal meanings.
  */
-class PatchVariable: public PatchGrid, public Variable {
-	friend std::ostream &operator<<(std::ostream &, PatchVariable &);
+class PatchVariable: public virtual PatchGrid, public virtual Variable {
+    template<class STREAM>
+	friend STREAM &operator<<(STREAM &os, PatchVariable &var){
+    	os << "-------------------PatchVariable Information Begin-----------------"
+    			<< std::endl;
+    	for (int p = 0; p < var.ntiles; p++) {
+    		os << "Tile # " << p << ": " << std::endl << var.tile[p] << std::endl;
+    	}
+    	os << "-------------------PatchVariable Information End-----------------"
+    			<< std::endl;
+
+    	return os;
+    }
 
 protected:
 	std::vector<Variable> tile; /**< This hides the tile in PatchGrid */
@@ -54,18 +65,6 @@ public:
 	}
 
 };
-
-/**
- * DistVariable is a distributed variable. Its memory is distributed on different machines
- * communicated by MPI
- */
-/*class DistVariable: public PatchVariable {
- public:
- DistVariable();
- DistVariable(const PatchGrid &, std::string,
- std::string, std::string, GridSpec = defaultgrid,
- );
- };*/
 
 
 #endif /* PATCHVARIABLE_H_ */

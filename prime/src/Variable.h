@@ -25,12 +25,50 @@
  * Variable allocated an array on Grid
  */
 class Variable: public virtual Grid {
-	/**
-	 * Variable cannot be declared as a const reference because
-	 * offset will be changed in the ouput, later it will be
-	 * set back.
-	 */
-	friend std::ostream &operator<<(std::ostream &, const Variable &);
+    template<class STREAM>
+	friend STREAM &operator<<(STREAM &os, const Variable &var){
+    	os << "-------------------Variable Information Begin-----------------"
+    			<< std::endl;
+    	os << "name: " << var.name << std::endl << "long name : " << var.long_name
+    			<< std::endl << "units : " << var.units << std::endl << "nx = "
+    			<< var.nx << " ny = " << var.ny << " nz = " << var.nz << " nt = "
+    			<< var.nt << " nh = " << var.nh << std::endl << "nxh = " << var.nxh
+    			<< " nyh = " << var.nyh << " nzh = " << var.nzh << " offset = "
+    			<< var.offset << std::endl;
+    	os << var.spec << std::endl;
+    	int offset;
+    	if (var.value == 0) {
+    		os << "-------------------Variable Information End-----------------"
+    				<< std::endl;
+    		return os;
+    	}
+    #if defined(DOMAIN_XY)
+    	for (int t = 0; t < var.nt; t++) {
+    		offset = t * var.shift2d;
+    		os << std::setw(7) << t << "|";
+    		for (int i = 0; i < var.nxh; i++)
+    			os << std::setw(8) << i - var.nh;
+    		os << std::endl;
+    		for (int i = -1; i < var.nxh; i++)
+    			os << "--------";
+    		os << std::endl;
+    		for (int j = 0; j < var.nyh; j++) {
+    			for (int i = -1; i < var.nxh; i++)
+    				if (i == -1)
+    					os << std::setw(7) << j - var.nh << "|";
+    				else
+    					os << std::setw(8)
+    							<< var.value[offset + i + j * var.shift1d];
+    			os << std::endl;
+    		}
+    		os << std::endl;
+    	}
+    #endif
+    	os << "-------------------Variable Information End-----------------"
+    			<< std::endl;
+    	return os;
+    }
+
 public:
 	FLOAT *value; /**< variable value */
 
