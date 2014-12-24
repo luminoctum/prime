@@ -29,6 +29,7 @@ DistGrid::DistGrid(const PatchGrid &grid, const MPI_Comm& _comm) :
 
 	PatchGrid::operator=(
 			grid.sub(nprocs[0], nprocs[1], coordinate[0] + coordinate[1] * nprocs[0]));
+	make();
 }
 
 

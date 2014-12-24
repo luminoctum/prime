@@ -127,7 +127,7 @@ public:
 	Variable& set_random_float();
 
 #if defined(DOMAIN_XYZ)
-	inline FLOAT& operator()(int i, int j, int k) const {
+	inline FLOAT& operator()(int i, int j, int k){
 		return value[offset + i + j * shift1d + k * shift2d];
 	}
 #elif defined(DOMAIN_XY) || defined(DOMAIN_YZ)
@@ -138,7 +138,7 @@ public:
 		return value[offset + i + j * shift1d];
 	}
 #elif defined(DOMAIN_Z)
-	inline FLOAT& operator()(int k) const {
+	inline FLOAT& operator()(int k){
 		return value[offset + k];
 	}
 #else

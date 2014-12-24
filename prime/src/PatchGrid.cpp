@@ -64,6 +64,11 @@ PatchGrid& PatchGrid::unmake() {
 }
 
 PatchGrid& PatchGrid::split(int tx, int ty) {
+	if (spec & abstract){
+		std::cerr << "PatchGrid must be concrete before split" << std::endl;
+		exit(1);
+	}
+	// if it is not the case, unmake will not take affect and tile will not be cleared
 	unmake();
 	ntilex = tx;
 	ntiley = ty;

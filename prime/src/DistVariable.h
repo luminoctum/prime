@@ -18,12 +18,12 @@
 class DistVariable: public DistGrid, public PatchVariable {
     template<class STREAM>
 	friend STREAM &operator<<(STREAM &os, DistVariable &var){
-    	os << "-------------------PatchVariable Information Begin-----------------"
+    	os << "-------------------DistVariable Information Begin-----------------"
     			<< std::endl;
     	for (int p = 0; p < var.ntiles; p++) {
     		os << "Tile # " << p << ": " << std::endl << var.tile[p] << std::endl;
     	}
-    	os << "-------------------PatchVariable Information End-----------------"
+    	os << "-------------------DistVariable Information End-----------------"
     			<< std::endl;
 
     	return os;

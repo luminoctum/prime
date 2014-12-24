@@ -33,14 +33,14 @@ int main(int argc, char *argv[]) {
 	PatchGrid domain(config);
 	DistGrid grid(domain, comm);
 	grid.split(2,2);
-	//DistVariable psi(grid, "psi", "streamfunction", "m^2/s");
-	//psi.clear_all().set_random_int();
+	PatchVariable psi(grid, "psi", "streamfunction", "m^2/s");
+	psi.clear_all().set_random_int();
 
     ofstream output;
     sprintf(filename, "output-%d.txt", rank);
     output.open(filename);
 
-	output << grid << endl;
+	output << (Variable)psi << endl;
     
     output.close();
 
