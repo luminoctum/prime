@@ -33,7 +33,7 @@ public:
 	DistVariable();
 
 	DistVariable(const DistGrid&, std::string = "", std::string = "",
-			std::string = "", GridSpec = defaultgrid);
+			std::string = "", GridSpec = abstract);
 
 	DistVariable& communicate();
 };

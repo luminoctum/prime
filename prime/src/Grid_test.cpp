@@ -12,6 +12,7 @@ void test_grid() {
 	Configure config("name.lst");
 	Grid grid(config);
 	cout << grid << endl;
+	cout << "aa" << grid.sub(1,1,0) << endl;
 	Grid subgrid;
 	cout << subgrid << endl;
 	for (int i = 0; i < 4; i++) {
@@ -26,6 +27,7 @@ void test_grid() {
 void test_patchgrid() {
 	Configure config("name.lst");
 	PatchGrid grid(config);
+	cout << grid << endl;
 	grid.split(2, 2);
 	cout << grid << endl;
 
@@ -34,7 +36,8 @@ void test_patchgrid() {
 
 	grid2 = grid;
 	cout << grid2 << endl;
-	cout << (Grid) grid2 << endl;
+	grid2.make();
+	cout << grid2 << endl;
 	for (int i = 0; i < grid2[0].nx; i++)
 		cout << grid2[0].lon[i] << " ";
 	cout << endl;

@@ -12,30 +12,29 @@ PatchGrid::PatchGrid() :
 }
 
 PatchGrid::PatchGrid(const Grid& grid) :
-		Grid(grid), ntilex(1), ntiley(1), ntiles(1), tile(1, grid) {
-	tile[0].unmake();
-	redirect();
+		Grid(grid), ntilex(1), ntiley(1), ntiles(1) {
 }
 
 PatchGrid::PatchGrid(const PatchGrid& pg) :
-		Grid(pg), ntilex(pg.ntilex), ntiley(pg.ntiley), ntiles(pg.ntiles), tile(
-				pg.tile) {
-	redirect();
+		Grid(pg), ntilex(pg.ntilex), ntiley(pg.ntiley), ntiles(pg.ntiles) {
 }
 
 PatchGrid::PatchGrid(const Configure& config, GridSpec gs) :
-		Grid(config, gs), ntilex(1), ntiley(1), ntiles(1), tile(1,
-				Grid(config, gs | abstract)) {
-	redirect();
+		Grid(config, gs), ntilex(1), ntiley(1), ntiles(1) {
 }
 
-PatchGrid& PatchGrid::operator=(const PatchGrid& pg) {
-	Grid::operator=(pg);
-	ntilex = pg.ntilex;
-	ntiley = pg.ntiley;
-	ntiles = pg.ntiles;
-	tile = pg.tile;
-	redirect();
+PatchGrid& PatchGrid::operator=(const PatchGrid& grid) {
+	Grid::operator=(grid);
+	ntilex = grid.ntilex;
+	ntiley = grid.ntiley;
+	ntiles = grid.ntiles;
+
+    if (~spec & abstract){
+        unmake();
+        make();
+    } else {
+        redirect();
+    }
 
 	return *this;
 }
@@ -43,7 +42,10 @@ PatchGrid& PatchGrid::operator=(const PatchGrid& pg) {
 PatchGrid& PatchGrid::make() {
 	if (~spec & abstract)
 		return *this;
+    // make Grid
 	Grid::make();
+
+    // make PatchGrid
 	for (int p = 0; p < ntiles; p++) {
 		tile.push_back(Grid::sub(ntilex, ntiley, p));
 		tile.back().set_shift_index(shift1d, shift2d, shift3d);
@@ -56,30 +58,31 @@ PatchGrid& PatchGrid::make() {
 PatchGrid& PatchGrid::unmake() {
 	if (spec & abstract)
 		return *this;
+    // unmake Grid
 	Grid::unmake();
+
+    // unmake PatchGrid
 	tile.clear();
-	redirect();
+    redirect();
 
 	return *this;
 }
 
 PatchGrid& PatchGrid::split(int tx, int ty) {
-	if (spec & abstract){
-		std::cerr << "PatchGrid must be concrete before split" << std::endl;
-		exit(1);
-	}
-	// if it is not the case, unmake will not take affect and tile will not be cleared
-	unmake();
 	ntilex = tx;
 	ntiley = ty;
 	ntiles = tx * ty;
-	make();
+    if (~spec & abstract){
+        unmake();
+        make();
+    } else {
+        redirect();
+    }
 
 	return *this;
 }
 
 PatchGrid& PatchGrid::redirect() {
-	Grid::redirect();
 	if (spec & abstract)
 		return *this;
 

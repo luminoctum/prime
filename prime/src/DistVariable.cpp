@@ -16,6 +16,8 @@ DistVariable::DistVariable(const DistGrid& grid, std::string _name,
 		std::string _long_name, std::string _units, GridSpec _spec) :
 		PatchGrid(grid), DistGrid(grid), PatchVariable(grid, _name, _long_name,
 				_units, _spec) {
+	//std::cout << _name << std::endl;
+	std::cout << spec << std::endl;
 }
 
 DistVariable& DistVariable::communicate(){

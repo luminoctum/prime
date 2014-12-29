@@ -30,42 +30,53 @@ class Variable: public virtual Grid {
     	os << "-------------------Variable Information Begin-----------------"
     			<< std::endl;
     	os << "name: " << var.name << std::endl << "long name : " << var.long_name
-    			<< std::endl << "units : " << var.units << std::endl << "nx = "
-    			<< var.nx << " ny = " << var.ny << " nz = " << var.nz << " nt = "
-    			<< var.nt << " nh = " << var.nh << std::endl << "nxh = " << var.nxh
-    			<< " nyh = " << var.nyh << " nzh = " << var.nzh << " offset = "
+    			<< std::endl << "units : " << var.units << " offset = "
     			<< var.offset << std::endl;
+    	os << "longitude: [" << var.lonbot << ":" << var.dlon << ":"
+    			<< var.lontop << "], nx = " << var.nx << ", nxh = " << var.nxh
+    			<< ", dx = " << var.dx / 1.E3 << " km" << std::endl;
+    	os << "latitude: [" << var.latbot << ":" << var.dlat << ":" << var.lattop
+    			<< "], ny = " << var.ny << ", nyh = " << var.nyh << ", dy = "
+    			<< var.dy / 1.E3 << " km" << std::endl;
+    	os << "vertical: Log[" << var.pbot << ":" << exp(var.dlnp) << ":"
+    			<< var.ptop << "], nz = " << var.nz << ", nzh = " << var.nzh
+    			<< ", dz = " << var.dz / 1.E3 << " km" << std::endl;
+    	os << "number of time steps stored: " << var.nt << std::endl;
     	os << var.spec << std::endl;
-    	int offset;
-    	if (var.value == 0) {
+    	os << "Boundary condition: ";
+    	for (int i = 0; i < 6; i++)
+    		os << var.boundary[i] << " ";
+    	os << std::endl;
+    	if (var.spec & abstract) {
     		os << "-------------------Variable Information End-----------------"
     				<< std::endl;
-    		return os;
-    	}
-    #if defined(DOMAIN_XY)
-    	for (int t = 0; t < var.nt; t++) {
-    		offset = t * var.shift2d;
-    		os << std::setw(7) << t << "|";
-    		for (int i = 0; i < var.nxh; i++)
-    			os << std::setw(8) << i - var.nh;
-    		os << std::endl;
-    		for (int i = -1; i < var.nxh; i++)
-    			os << "--------";
-    		os << std::endl;
-    		for (int j = 0; j < var.nyh; j++) {
-    			for (int i = -1; i < var.nxh; i++)
-    				if (i == -1)
-    					os << std::setw(7) << j - var.nh << "|";
-    				else
-    					os << std::setw(8)
-    							<< var.value[offset + i + j * var.shift1d];
-    			os << std::endl;
-    		}
-    		os << std::endl;
-    	}
-    #endif
-    	os << "-------------------Variable Information End-----------------"
-    			<< std::endl;
+    	} else {
+        #if defined(DOMAIN_XY)
+            int offset;
+            for (int t = 0; t < var.nt; t++) {
+                offset = t * var.shift2d;
+                os << std::setw(7) << t << "|";
+                for (int i = 0; i < var.nxh; i++)
+                    os << std::setw(8) << i - var.nh;
+                os << std::endl;
+                for (int i = -1; i < var.nxh; i++)
+                    os << "--------";
+                os << std::endl;
+                for (int j = 0; j < var.nyh; j++) {
+                    for (int i = -1; i < var.nxh; i++)
+                        if (i == -1)
+                            os << std::setw(7) << j - var.nh << "|";
+                        else
+                            os << std::setw(8)
+                                    << var.value[offset + i + j * var.shift1d];
+                    os << std::endl;
+                }
+                os << std::endl;
+            }
+        #endif
+            os << "-------------------Variable Information End-----------------"
+                    << std::endl;
+        }
     	return os;
     }
 
@@ -87,14 +98,11 @@ public:
 	Variable(const Variable&);
 
 	Variable(const Grid&, std::string = "", std::string = "", std::string = "",
-			GridSpec = defaultgrid);
+			GridSpec = abstract);
 
 	~Variable();
 
 	Variable& operator=(const Variable&);
-
-	// set value to a FLOAT
-	Variable& operator=(FLOAT);
 
 	Variable& make();
 
@@ -120,7 +128,7 @@ public:
 	 */
 	Variable& save();
 
-	Variable& set_offset(int = 0);
+	Variable& slice(int = 0);
 
 	Variable& set_random_int(int = -10, int = 10);
 
@@ -144,7 +152,6 @@ public:
 #else
 #endif
 
-protected:
 	Variable& redirect();
 
 };

@@ -14,8 +14,21 @@
 #include "DistVariable.h"
 using namespace std;
 
+void test_configure();
+void test_grid();
+void test_patchgrid();
+void test_subpatchgrid();
+void test_variable();
+void test_patchvariable();
+void test_subpatchvariable();
 
 int main(int argc, char *argv[]) {
+	//test_configure();
+	//test_variable();
+	//test_subpatchgrid();
+	//test_patchvariable();
+	test_subpatchvariable();
+	/*
 	MPI_Init(&argc, &argv);
 
     char filename[80];
@@ -32,18 +45,19 @@ int main(int argc, char *argv[]) {
 	Configure config("name.lst");
 	PatchGrid domain(config);
 	DistGrid grid(domain, comm);
-	grid.split(2,2);
-	PatchVariable psi(grid, "psi", "streamfunction", "m^2/s");
+	//grid.split(2,2);
+	DistVariable psi(grid, "psi", "streamfunction", "m^2/s");
 	psi.clear_all().set_random_int();
 
     ofstream output;
     sprintf(filename, "output-%d.txt", rank);
     output.open(filename);
 
-	output << (Variable)psi << endl;
+	output << psi << endl;
     
     output.close();
 
 	MPI_Finalize();
+	*/
 	return 0;
 }

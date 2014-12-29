@@ -20,7 +20,6 @@
  * default GridSpec is concrete, diagnostic, nonstag
  */
 enum GridSpec {
-	defaultgrid = 0x000,
 	abstract = 0x001,
 	prognostic = 0x002,
 	stagx = 0x004,

@@ -28,8 +28,8 @@ mean_radius [m] = 69911.E3;
 mean_latitude [deg] = 45.;
 mean_gravity [m/s^2] = 24.79;
 number_of_vertical_layers [] = 1;
-number_of_latitude_grids [] = 16;
-number_of_longitude_grids [] = 16;
+number_of_latitude_grids [] = 8;
+number_of_longitude_grids [] = 8;
 
 
 // time control YYYY-MM-DD:hh:mm:ss

@@ -124,11 +124,14 @@ public:
 	 */
 	Grid();
 
+	/**
+	 * return an abstract grid
+	 */
 	Grid(const Grid&);
 
 	virtual ~Grid();
 
-	Grid(const Configure&, GridSpec = defaultgrid);
+	Grid(const Configure&, GridSpec = abstract);
 
 	/**
 	 * return an abstract grid that equal to the original grid.

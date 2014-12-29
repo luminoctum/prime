@@ -7,29 +7,21 @@
 
 #include "PatchVariable.h"
 
-PatchVariable::PatchVariable(){
+PatchVariable::PatchVariable() {
 }
 
 PatchVariable::PatchVariable(const Variable &var) :
-	Grid(var), PatchGrid(var), Variable(var), tile(1, Variable(var)){
-	tile[0].unmake();
-	redirect();
+		Grid(var), PatchGrid(var), Variable(var) {
 }
 
 PatchVariable::PatchVariable(const PatchVariable &pv) :
-		Grid(pv), PatchGrid(pv), Variable(pv), tile(pv.tile) {
-	redirect();
+		Grid(pv), PatchGrid(pv), Variable(pv) {
 }
 
 PatchVariable::PatchVariable(const PatchGrid& pgrid, std::string _name,
 		std::string _long_name, std::string _units, GridSpec _spec) :
 		Grid(pgrid), PatchGrid(pgrid), Variable(pgrid, _name, _long_name,
 				_units, _spec) {
-	for (int p = 0; p < ntiles; p++)
-		tile.push_back(
-				Variable(PatchGrid::tile[p], name, long_name, units,
-						spec | abstract));
-	redirect();
 }
 
 PatchVariable& PatchVariable::operator=(const PatchVariable &pv) {
@@ -37,12 +29,17 @@ PatchVariable& PatchVariable::operator=(const PatchVariable &pv) {
 	PatchGrid::operator =(pv);
 	Variable::operator =(pv);
 	tile = pv.tile;
-	redirect();
+    if (~spec & abstract) {
+        unmake();
+        make();
+    } else {
+        redirect();
+    }
 
 	return *this;
 }
 
-PatchVariable& PatchVariable::make(){
+PatchVariable& PatchVariable::make() {
 	if (~spec & abstract)
 		return *this;
 	// make Grid
@@ -58,20 +55,20 @@ PatchVariable& PatchVariable::make(){
 	// make Variable
 	size = nt * nxh * nyh * nzh;
 	value = new FLOAT[size];
+    Variable::redirect();
 
 	// make PatchVariable
 	for (int p = 0; p < ntiles; p++) {
 		tile.push_back(Variable::sub(ntilex, ntiley, p));
 		tile.back().set_shift_index(shift1d, shift2d, shift3d);
-		tile.back().set_offset();
+		tile.back().redirect();
 	}
-
 	redirect();
-	spec &= ~abstract;
+
 	return *this;
 }
 
-PatchVariable& PatchVariable::unmake(){
+PatchVariable& PatchVariable::unmake() {
 	if (spec & abstract)
 		return *this;
 	// unmake Grid
@@ -79,9 +76,11 @@ PatchVariable& PatchVariable::unmake(){
 
 	// unmake PatchGrid
 	PatchGrid::tile.clear();
+    PatchGrid::redirect();
 
 	// unmake Variable
-	delete[] value;
+    delete[] value;
+    Variable::redirect();
 
 	// unmake PatchVariable
 	tile.clear();
@@ -91,9 +90,6 @@ PatchVariable& PatchVariable::unmake(){
 }
 
 PatchVariable& PatchVariable::redirect() {
-	Grid::redirect();
-	PatchGrid::redirect();
-	Variable::redirect();
 	if (spec & abstract)
 		return *this;
 
@@ -105,19 +101,3 @@ PatchVariable& PatchVariable::redirect() {
 
 	return *this;
 }
-
-PatchVariable& PatchVariable::split(int tx, int ty) {
-	PatchGrid::split(tx, ty);
-	tile.clear();
-	for (int p = 0; p < ntiles; p++) {
-		tile.push_back(Variable::sub(ntilex, ntiley, p));
-		tile.back().set_shift_index(shift1d, shift2d, shift3d);
-		tile.back().set_offset();
-	}
-	redirect();
-
-	return *this;
-}
-
-
-

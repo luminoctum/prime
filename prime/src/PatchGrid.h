@@ -29,10 +29,28 @@ class PatchGrid: public virtual Grid {
     			<< std::endl;
     	os << "Number of tiles: " << grid.ntilex << " x " << grid.ntiley << " = "
     			<< grid.ntiles << std::endl;
-    	for (int i = 0; i < grid.ntiles; i++) {
-    		os << "Tile # " << i << ": " << std::endl;
-    		os << grid.tile[i] << std::endl;
-    	}
+    	os << "Grid spec: " << grid.spec << std::endl;
+    	os << "Boundary condition: ";
+     	for (int i = 0; i < 6; i++)
+        		os << grid.boundary[i] << " ";
+        	os << std::endl;
+        if (grid.spec & abstract) {
+        	os << "longitude: [" << grid.lonbot << ":" << grid.dlon << ":"
+        			<< grid.lontop << "], nx = " << grid.nx << ", nxh = " << grid.nxh
+        			<< ", dx = " << grid.dx / 1.E3 << " km" << std::endl;
+        	os << "latitude: [" << grid.latbot << ":" << grid.dlat << ":" << grid.lattop
+        			<< "], ny = " << grid.ny << ", nyh = " << grid.nyh << ", dy = "
+        			<< grid.dy / 1.E3 << " km" << std::endl;
+        	os << "vertical: Log[" << grid.pbot << ":" << exp(grid.dlnp) << ":"
+        			<< grid.ptop << "], nz = " << grid.nz << ", nzh = " << grid.nzh
+        			<< ", dz = " << grid.dz / 1.E3 << " km" << std::endl;
+        	os << "number of time steps stored: " << grid.nt << std::endl;
+        } else {
+            for (int i = 0; i < grid.ntiles; i++) {
+                os << "Tile # " << i << ": " << std::endl;
+                os << grid.tile[i] << std::endl;
+            }
+        }
     	os << "----------------PatchGrid Information End----------------"
     			<< std::endl;
     	return os;
@@ -54,7 +72,7 @@ public:
 
 	PatchGrid(const PatchGrid&);
 
-	PatchGrid(const Configure&, GridSpec = defaultgrid);
+	PatchGrid(const Configure&, GridSpec = abstract);
 
 	PatchGrid& operator=(const PatchGrid&);
 
