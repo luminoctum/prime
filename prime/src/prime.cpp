@@ -23,9 +23,10 @@ void test_patchvariable();
 void test_subpatchvariable();
 
 int main(int argc, char *argv[]) {
+	//test_patchgrid();
 	//test_configure();
 	//test_variable();
-	//test_subpatchgrid();
+	//test_patchgrid();
 	//test_patchvariable();
 	test_subpatchvariable();
 	/*

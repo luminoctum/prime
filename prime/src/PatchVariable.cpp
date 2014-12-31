@@ -61,14 +61,16 @@ PatchVariable& PatchVariable::make() {
 	for (int p = 0; p < ntiles; p++) {
 		tile.push_back(Variable::sub(ntilex, ntiley, p));
 		tile.back().set_shift_index(shift1d, shift2d, shift3d);
-		tile.back().redirect();
+		//tile.back().redirect();
 	}
+
 	redirect();
 
 	return *this;
 }
 
 PatchVariable& PatchVariable::unmake() {
+	//std::cout << "PatchVariable unmake" << std::endl;
 	if (spec & abstract)
 		return *this;
 	// unmake Grid
@@ -92,7 +94,6 @@ PatchVariable& PatchVariable::unmake() {
 PatchVariable& PatchVariable::redirect() {
 	if (spec & abstract)
 		return *this;
-
 	for (int p = 0; p < ntiles; p++) {
 		int i = p % ntilex;
 		int j = p / ntilex;
@@ -100,4 +101,17 @@ PatchVariable& PatchVariable::redirect() {
 	}
 
 	return *this;
+}
+
+std::string PatchVariable::head_info() const {
+    std::string result;
+    char buf[100];
+
+    result = "name          : " + name + " (" + long_name + ", " + units + ")\n";
+	sprintf(buf, "%-14s: %d x %d = %d\n", "tiles", ntilex, ntiley, ntiles);
+	result += buf;
+    result += Grid::head_info();
+
+
+    return result;
 }

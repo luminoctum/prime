@@ -100,3 +100,14 @@ PatchGrid& PatchGrid::redirect() {
 	return *this;
 }
 
+std::string PatchGrid::head_info() const{
+	std::string result;
+	char buf[100];
+
+	sprintf(buf, "%-14s: %d x %d = %d\n", "tiles", ntilex, ntiley, ntiles);
+	result = buf;
+	result += Grid::head_info();
+
+	return result;
+}
+

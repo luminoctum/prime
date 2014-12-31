@@ -20,44 +20,26 @@
  * represent the normal meanings.
  */
 class PatchVariable: public virtual PatchGrid, public Variable {
-    template<class STREAM>
-	friend STREAM &operator<<(STREAM &os, PatchVariable &var){
-    	os << "-------------------PatchVariable Information Begin-----------------"
-    			<< std::endl;
-    	os << "name: " << var.name << std::endl << "long name : " << var.long_name
-    			<< std::endl << "units : " << var.units << " offset = "
-    			<< var.offset << std::endl;
-    	os << "longitude: [" << var.lonbot << ":" << var.dlon << ":"
-    			<< var.lontop << "], nx = " << var.nx << ", nxh = " << var.nxh
-    			<< ", dx = " << var.dx / 1.E3 << " km" << std::endl;
-    	os << "latitude: [" << var.latbot << ":" << var.dlat << ":" << var.lattop
-    			<< "], ny = " << var.ny << ", nyh = " << var.nyh << ", dy = "
-    			<< var.dy / 1.E3 << " km" << std::endl;
-    	os << "vertical: Log[" << var.pbot << ":" << exp(var.dlnp) << ":"
-    			<< var.ptop << "], nz = " << var.nz << ", nzh = " << var.nzh
-    			<< ", dz = " << var.dz / 1.E3 << " km" << std::endl;
-    	os << "number of time steps stored: " << var.nt << std::endl;
-    	os << var.spec << std::endl;
-    	os << "Boundary condition: ";
-    	for (int i = 0; i < 6; i++)
-    		os << var.boundary[i] << " ";
-    	os << std::endl;
-    	if (~ var.spec & abstract) {
-    		for (int p = 0; p < var.ntiles; p++) {
-    			os << "Tile # " << p << ": " << std::endl;
-    			os << var.tile[p] << std::endl;
-    		}
-    	}
-    	os << "-------------------PatchVariable Information End-----------------"
-    			<< std::endl;
+	template<class STREAM>
+	friend STREAM &operator<<(STREAM &os, PatchVariable &var) {
+		os
+				<< "-------------------PatchVariable Information Begin-----------------"
+				<< std::endl;
+		os << var.head_info();
+		if (~var.spec & abstract) for (int p = 0; p < var.ntiles; p++) {
+			os << "Tile # " << p << ":" << std::endl;
+			os << var.tile[p].head_info() << var.tile[p].value_info();
+		}
+		os
+				<< "-------------------PatchVariable Information End-----------------"
+				<< std::endl;
 
-    	return os;
-    }
+		return os;
+	}
 
-protected:
+//protected:
+public:
 	std::vector<Variable> tile; /**< This hides the tile in PatchGrid */
-
-	PatchVariable& redirect();
 
 public:
 	PatchVariable();
@@ -75,7 +57,7 @@ public:
 
 	PatchVariable& unmake();
 
-	inline const Variable& operator[](int p) const{
+	inline const Variable& operator[](int p) const {
 		return tile[p];
 	}
 
@@ -83,7 +65,12 @@ public:
 		return tile[p];
 	}
 
-};
+	std::string head_info() const;
 
+protected:
+	PatchVariable& redirect();
+
+
+};
 
 #endif /* PATCHVARIABLE_H_ */

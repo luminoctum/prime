@@ -36,6 +36,9 @@ public:
 			std::string = "", GridSpec = abstract);
 
 	DistVariable& communicate();
+
+protected:
+    std::string head_info() const;
 };
 
 #endif /* DISTVARIABLE_H_ */

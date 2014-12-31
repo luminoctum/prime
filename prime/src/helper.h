@@ -31,7 +31,7 @@ enum GridSpec {
 
 template<class STREAM>
 STREAM &operator<<(STREAM &os, GridSpec vt) {
-	os << "GridSpec |";
+	os << "gridSpec      : |";
 	if (vt & abstract)
 		os << "abstract|";
 	else
@@ -103,8 +103,6 @@ inline GridSpec& operator |=(GridSpec &vt1, GridSpec vt2) {
 	vt1 = vt1 | vt2;
 	return vt1;
 }
-
-typedef unsigned long BoundaryType;
 
 
 #endif /* HELPER_H_ */

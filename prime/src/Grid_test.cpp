@@ -47,8 +47,8 @@ void test_patchgrid() {
 void test_subpatchgrid() {
 	Configure config("name.lst");
 	PatchGrid grid(config);
-	//grid = grid.sub(2, 2, 1).make();
-	//cout << (Grid) grid << endl;
-	//cout << grid << endl;
+	grid = grid.sub(2, 2, 1);
+    grid.make();
+	cout << grid << endl;
 	cout << grid.sub(2, 2, 1) << endl;
 }

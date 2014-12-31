@@ -24,3 +24,9 @@ DistVariable& DistVariable::communicate(){
 
 	return *this;
 }
+
+std::string DistVariable::head_info() const{
+    std::string result;
+
+    return result;
+}

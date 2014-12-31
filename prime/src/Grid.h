@@ -9,12 +9,11 @@
 #define GRID_H_
 
 #include <iostream>
+#include <sstream>
 #include <iomanip>
 #include <array>
 #include <vector>
-#include <cstdio>
-#include <cstdlib>
-#include <cstring>
+#include <string>
 #include <cmath>
 #include "Configure.h"
 #include "helper.h"
@@ -38,25 +37,9 @@
 class Grid {
     template<class STREAM>
 	friend STREAM &operator<<(STREAM &os, const Grid &grid){
-    	os << "-----------Grid Information Begin-----------"
-    			<< std::endl;
-    	os << "longitude: [" << grid.lonbot << ":" << grid.dlon << ":"
-    			<< grid.lontop << "], nx = " << grid.nx << ", nxh = " << grid.nxh
-    			<< ", dx = " << grid.dx / 1.E3 << " km" << std::endl;
-    	os << "latitude: [" << grid.latbot << ":" << grid.dlat << ":" << grid.lattop
-    			<< "], ny = " << grid.ny << ", nyh = " << grid.nyh << ", dy = "
-    			<< grid.dy / 1.E3 << " km" << std::endl;
-    	os << "vertical: Log[" << grid.pbot << ":" << exp(grid.dlnp) << ":"
-    			<< grid.ptop << "], nz = " << grid.nz << ", nzh = " << grid.nzh
-    			<< ", dz = " << grid.dz / 1.E3 << " km" << std::endl;
-    	os << "number of time steps stored: " << grid.nt << std::endl;
-    	os << "Grid specifics: " << grid.spec << std::endl;
-    	os << "Boundary condition: ";
-    	for (int i = 0; i < 6; i++)
-    		os << grid.boundary[i] << " ";
-    	os << std::endl
-    			<< "-----------Grid Information End-------------"
-    			<< std::endl;
+    	os << "-----------Grid Information Begin-----------" << std::endl;
+    	os << grid.head_info();
+    	os << "------------Grid Information End------------" << std::endl;
 
     	return os;
     }
@@ -166,6 +149,12 @@ public:
 	int get_boundary(int i) const{
 		return boundary[i];
 	}
+
+	/**
+	 * get head information for print
+	 */
+	virtual std::string head_info() const;
+
 
 protected:
 

@@ -41,7 +41,10 @@ void test_patchvariable() {
 	cout << "cc" << endl;
 	cout << psi << endl;
 	cout << "dd" << endl;
-	psi.split(1, 4);
+	psi.split(2,2);
+	psi.clear_all().set_random_int();
+	psi[0].save();
+
 	cout << psi << endl;
 
 

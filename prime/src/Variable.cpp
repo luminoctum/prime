@@ -94,9 +94,7 @@ Variable& Variable::redirect() {
 }
 
 Variable Variable::sub(int tx, int ty, int p) const {
-	Variable result(Grid::sub(tx, ty, p), name, long_name, units,
-			spec | abstract);
-    result.redirect();
+	Variable result(Grid::sub(tx, ty, p), name, long_name, units, spec);
 
 	return result;
 }
@@ -182,3 +180,49 @@ Variable& Variable::slice(int t) {
 	return *this;
 }
 
+std::string Variable::head_info() const{
+    std::string result;
+
+    result = "name          : " + name + " (" + long_name + ", " + units + ")\n";
+    result += Grid::head_info();
+
+    return result;
+}
+
+std::string Variable::value_info() const{
+    std::string result;
+    int offset;
+    char buf[100];
+
+    result = "";
+    for (int t = 0; t < nt; t++){
+        offset = t * shift2d;
+        //std::cout << "offset = " << offset << std::endl;
+        //std::cout << "shift1d = " << shift1d << std::endl;
+        sprintf(buf, "t = %d  |", t);
+        result += buf;
+        for (int i = 0; i < nxh; i++){
+            sprintf(buf, "%8d", i - nh);
+            result += buf;
+        }
+        result += "\n";
+        for (int i = -1; i < nxh; i++)
+            result += "--------";
+        result += "\n";
+        for (int j = 0; j < nyh; j++){
+            sprintf(buf, "%7d|", j - nh);
+            result += buf;
+            for (int i = 0; i < nxh; i++){
+            	std::stringstream ss;
+            	ss << std::setw(8) << value[offset + i + j * shift1d];
+            	result += ss.str();
+                //sprintf(buf, "%8.1e", value[offset + i + j * shift1d]);
+                //result += buf;
+            }
+            result += "\n";
+        }
+        if (t != nt - 1) result += "\n";
+    }
+
+    return result;
+}

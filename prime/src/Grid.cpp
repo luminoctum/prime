@@ -25,7 +25,7 @@ Grid::Grid(const Grid &grid) :
 				grid.nyh), nzh(grid.nzh), shift1d(grid.shift1d), shift2d(
 				grid.shift2d), shift3d(grid.shift3d), spec(grid.spec), boundary(
 				grid.boundary) {
-	std::cout << "Grid copy constructor called." << std::endl;
+	//std::cout << "Grid copy constructor called." << std::endl;
 	spec |= abstract;
     redirect();
 }
@@ -140,7 +140,6 @@ Grid& Grid::make() {
 		ptol[i] = pbot * exp(i * dlnp);
 	}
 
-	std::cout << "make" << std::endl;
 	spec &= ~abstract;
 
 
@@ -200,8 +199,6 @@ Grid Grid::sub(int tx, int ty, int p) const {
 	if (j != ty - 1)
 		result.boundary[3] = 0;
 
-	result.redirect();
-
 	return result;
 }
 
@@ -216,4 +213,35 @@ Grid& Grid::redirect() {
 	}
 
 	return *this;
+}
+
+
+std::string Grid::head_info() const{
+	std::string result;
+	char buf[100];
+
+	result = "";
+	sprintf(buf, "%-14s: [%8.2f : %8.2f : %8.2f] ", "longitude", lonbot, dlon, lontop);
+	result += buf;
+	sprintf(buf, "nx = %5d, nxh = %5d, dx = %12.2f km\n", nx, nxh, dx / 1.E3);
+	result += buf;
+	sprintf(buf, "%-14s: [%8.2f : %8.2f : %8.2f] ", "latitude", latbot, dlat, lattop);
+	result += buf;
+	sprintf(buf, "ny = %5d, nyh = %5d, dy = %12.2f km\n", ny, nyh, dy / 1.E3);
+	result += buf;
+	sprintf(buf, "%-14s: [%8.2e : %8.2f : %8.2e] ", "vertical", pbot, exp(dlnp), ptop);
+	result += buf;
+	sprintf(buf, "nz = %5d, nzh = %5d, dz = %12.2f km\n", nz, nzh, dz / 1.E3);
+	result += buf;
+	sprintf(buf, "%-14s: %d\n", "timesteps", nt);
+	result += buf;
+	sprintf(buf, "%-14s: %d %d %d %d %d %d\n", "boundary",
+			boundary[0], boundary[1], boundary[2], boundary[3], boundary[4], boundary[5]);
+    result += buf;
+	std::stringstream ss;
+	ss << spec;
+	result += ss.str();
+	result += "\n";
+
+	return result;
 }
