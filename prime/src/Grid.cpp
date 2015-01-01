@@ -11,8 +11,7 @@ Grid::Grid() :
 		lonbot(0), lontop(0), dlon(0), dx(0), latbot(0), lattop(0), dlat(0), dy(
 				0), pbot(0), ptop(0), pref(0), dlnp(0), dz(0), radius0(0), lat0(
 				0), lon(0), rlon(0), mlon(0), lat(0), rlat(0), mlat(0), ptol(0), nt(
-				0), nx(0), ny(0), nz(0), nh(0), nxh(0), nyh(0), nzh(0), shift1d(
-				0), shift2d(0), shift3d(0), spec(abstract), boundary { { 0, 0,
+				0), nx(0), ny(0), nz(0), nh(0), nxh(0), nyh(0), nzh(0), spec(abstract), boundary { { 0, 0,
 				0, 0, 0, 0 } } {
 }
 
@@ -22,8 +21,7 @@ Grid::Grid(const Grid &grid) :
 				grid.pbot), ptop(grid.ptop), pref(grid.pref), dlnp(grid.dlnp), dz(
 				grid.dz), radius0(grid.radius0), lat0(grid.lat0), nt(grid.nt), nx(
 				grid.nx), ny(grid.ny), nz(grid.nz), nh(grid.nh), nxh(grid.nxh), nyh(
-				grid.nyh), nzh(grid.nzh), shift1d(grid.shift1d), shift2d(
-				grid.shift2d), shift3d(grid.shift3d), spec(grid.spec), boundary(
+				grid.nyh), nzh(grid.nzh), spec(grid.spec), boundary(
 				grid.boundary) {
 	//std::cout << "Grid copy constructor called." << std::endl;
 	spec |= abstract;
@@ -58,9 +56,6 @@ Grid::Grid(const Configure& config, GridSpec gs) :
 	nxh = nx == 1 ? 1 : nx + 2 * nh;
 	nyh = ny == 1 ? 1 : ny + 2 * nh;
 	nzh = nz == 1 ? 1 : nz + 2 * nh;
-	shift3d = nxh * nyh * nzh;
-	shift2d = nxh * nyh;
-	shift1d = nxh;
 
 	if (latbot == -90.)
 		spec |= isspole;
@@ -102,9 +97,6 @@ Grid& Grid::operator=(const Grid &grid) {
 	nxh = grid.nxh;
 	nyh = grid.nyh;
 	nzh = grid.nzh;
-	shift1d = grid.shift1d;
-	shift2d = grid.shift2d;
-	shift3d = grid.shift3d;
 	boundary = grid.boundary;
 
     if (~spec & abstract){
@@ -115,9 +107,8 @@ Grid& Grid::operator=(const Grid &grid) {
 	return *this;
 }
 
-Grid& Grid::make() {
-	if (~spec & abstract)
-		return *this;
+void Grid::make() {
+	if (~spec & abstract) return;
 	lon = new FLOAT[nx];
 	rlon = new FLOAT[nx];
 	mlon = new FLOAT[nx];
@@ -141,14 +132,10 @@ Grid& Grid::make() {
 	}
 
 	spec &= ~abstract;
-
-
-	return *this;
 }
 
-Grid& Grid::unmake() {
-	if (spec & abstract)
-		return *this;
+void Grid::unmake() {
+	if (spec & abstract) return;
 	//std::cout << "grid unmade" << std::endl;
 	delete[] lon;
 	delete[] rlon;
@@ -159,8 +146,6 @@ Grid& Grid::unmake() {
 	delete[] ptol;
 	spec |= abstract;
 	redirect();
-
-	return *this;
 }
 
 Grid Grid::sub(int tx, int ty, int p) const {
@@ -186,9 +171,6 @@ Grid Grid::sub(int tx, int ty, int p) const {
 	result.ny = (j == ty - 1 ? sy + ny % ty : sy);
 	result.nxh = result.nx + 2 * result.nh;
 	result.nyh = result.ny + 2 * result.nh;
-	result.shift3d = result.nxh * result.nyh * result.nzh;
-	result.shift2d = result.nxh * result.nyh;
-	result.shift1d = result.nxh;
 
 	if (i != 0)
 		result.boundary[0] = 0;
@@ -202,7 +184,7 @@ Grid Grid::sub(int tx, int ty, int p) const {
 	return result;
 }
 
-Grid& Grid::redirect() {
+void Grid::redirect() {
 	if (spec & abstract) {
 		lon = 0;
 		rlon = 0;
@@ -211,8 +193,6 @@ Grid& Grid::redirect() {
 		rlat = 0;
 		mlat = 0;
 	}
-
-	return *this;
 }
 
 

@@ -27,8 +27,8 @@ int main(int argc, char *argv[]) {
 	//test_configure();
 	//test_variable();
 	//test_patchgrid();
-	//test_patchvariable();
-	test_subpatchvariable();
+	test_patchvariable();
+	//test_subpatchvariable();
 	/*
 	MPI_Init(&argc, &argv);
 

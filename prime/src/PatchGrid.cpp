@@ -29,64 +29,51 @@ PatchGrid& PatchGrid::operator=(const PatchGrid& grid) {
 	ntiley = grid.ntiley;
 	ntiles = grid.ntiles;
 
-    if (~spec & abstract){
-        unmake();
-        make();
-    } else {
-        redirect();
-    }
+	if (~spec & abstract) {
+		unmake();
+		make();
+	} else {
+		redirect();
+	}
 
 	return *this;
 }
 
-PatchGrid& PatchGrid::make() {
-	if (~spec & abstract)
-		return *this;
-    // make Grid
+void PatchGrid::make() {
+	if (~spec & abstract) return;
+	// make Grid
 	Grid::make();
 
-    // make PatchGrid
-	for (int p = 0; p < ntiles; p++) {
+	// make PatchGrid
+	for (int p = 0; p < ntiles; p++)
 		tile.push_back(Grid::sub(ntilex, ntiley, p));
-		tile.back().set_shift_index(shift1d, shift2d, shift3d);
-	}
 	redirect();
-
-	return *this;
 }
 
-PatchGrid& PatchGrid::unmake() {
-	if (spec & abstract)
-		return *this;
-    // unmake Grid
+void PatchGrid::unmake() {
+	if (spec & abstract) return;
+	// unmake Grid
 	Grid::unmake();
 
-    // unmake PatchGrid
+	// unmake PatchGrid
 	tile.clear();
-    redirect();
-
-	return *this;
+	redirect();
 }
 
-PatchGrid& PatchGrid::split(int tx, int ty) {
+void PatchGrid::split(int tx, int ty) {
 	ntilex = tx;
 	ntiley = ty;
 	ntiles = tx * ty;
-    if (~spec & abstract){
-        unmake();
-        make();
-    } else {
-        redirect();
-    }
-
-	return *this;
+	if (~spec & abstract) {
+		unmake();
+		make();
+	} else {
+		redirect();
+	}
 }
 
-PatchGrid& PatchGrid::redirect() {
-	if (spec & abstract)
-		return *this;
-
-	for (int j = 0; j < ntiley; j++)
+void PatchGrid::redirect() {
+	if (~spec & abstract) for (int j = 0; j < ntiley; j++)
 		for (int i = 0; i < ntilex; i++) {
 			Grid &atile = tile[i + j * ntilex];
 			atile.lon = lon + i * atile.nx;
@@ -96,11 +83,9 @@ PatchGrid& PatchGrid::redirect() {
 			atile.rlat = lon + j * atile.ny;
 			atile.mlat = lon + j * atile.ny;
 		}
-
-	return *this;
 }
 
-std::string PatchGrid::head_info() const{
+std::string PatchGrid::head_info() const {
 	std::string result;
 	char buf[100];
 

@@ -30,7 +30,8 @@ class Variable: public virtual Grid {
 		os << "-------------------Variable Information Begin-----------------"
 				<< std::endl;
 		os << var.head_info();
-		if (~var.spec & abstract) os << var.value_info();
+		//if (~var.spec & abstract) os << var.value_info();
+		if (var.value != 0) os << var.value_info();
 		os << "-------------------Variable Information End-----------------"
 				<< std::endl;
 		return os;
@@ -39,10 +40,13 @@ class Variable: public virtual Grid {
 public:
 	FLOAT *value; /**< variable value */
 
-protected:
+//protected:
 	int cur, /**< current storage of time slice */
 	size, /**< total number of elements in value, size of an abstract variable is 0 */
-	offset; /**< offset value used to access value at different time storage */
+	offset, /**< offset value used to access value at different time storage */
+	shift1d, /**< index shift in first dimension, usually shift1d = nxh */
+	shift2d, /**< index shift in first two dimension, usually shift2d = nxh * nyh*/
+	shift3d; /**< index shift in first 3 dimension, usually shift3d = nxh * nyh * nzh*/
 
 	std::string name, /**< variable short name */
 	long_name, /**< variable long name */
@@ -60,9 +64,9 @@ public:
 
 	Variable& operator=(const Variable&);
 
-	Variable& make();
+	void make();
 
-	Variable& unmake();
+	void unmake();
 
 	Variable sub(int, int, int) const;
 
@@ -88,7 +92,7 @@ public:
 
 	Variable& set_random_int(int = -10, int = 10);
 
-	Variable& set_random_float();
+	void set_shift_index(int s1, int s2, int s3);
 
 #if defined(DOMAIN_XYZ)
 	inline FLOAT& operator()(int i, int j, int k) {
@@ -113,8 +117,7 @@ public:
 	std::string value_info() const;
 
 protected:
-	Variable& redirect();
-
+	void redirect();
 
 };
 

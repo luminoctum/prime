@@ -28,7 +28,8 @@ class PatchVariable: public virtual PatchGrid, public Variable {
 		os << var.head_info();
 		if (~var.spec & abstract) for (int p = 0; p < var.ntiles; p++) {
 			os << "Tile # " << p << ":" << std::endl;
-			os << var.tile[p].head_info() << var.tile[p].value_info();
+			os << var.tile[p];
+			//os << var.tile[p].head_info() << var.tile[p].value_info();
 		}
 		os
 				<< "-------------------PatchVariable Information End-----------------"
@@ -53,9 +54,9 @@ public:
 
 	PatchVariable& operator=(const PatchVariable&);
 
-	PatchVariable& make();
+	void make();
 
-	PatchVariable& unmake();
+	void unmake();
 
 	inline const Variable& operator[](int p) const {
 		return tile[p];
@@ -68,7 +69,7 @@ public:
 	std::string head_info() const;
 
 protected:
-	PatchVariable& redirect();
+	void redirect();
 
 
 };

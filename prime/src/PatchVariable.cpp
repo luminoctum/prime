@@ -29,89 +29,78 @@ PatchVariable& PatchVariable::operator=(const PatchVariable &pv) {
 	PatchGrid::operator =(pv);
 	Variable::operator =(pv);
 	tile = pv.tile;
-    if (~spec & abstract) {
-        unmake();
-        make();
-    } else {
-        redirect();
-    }
+	if (~spec & abstract) {
+		unmake();
+		make();
+	} else {
+		redirect();
+	}
 
 	return *this;
 }
 
-PatchVariable& PatchVariable::make() {
-	if (~spec & abstract)
-		return *this;
+void PatchVariable::make() {
+	if (~spec & abstract) return;
 	// make Grid
 	Grid::make();
 
 	// make PatchGrid
-	for (int p = 0; p < ntiles; p++) {
+	for (int p = 0; p < ntiles; p++)
 		PatchGrid::tile.push_back(Grid::sub(ntilex, ntiley, p));
-		PatchGrid::tile.back().set_shift_index(shift1d, shift2d, shift3d);
-	}
 	PatchGrid::redirect();
 
 	// make Variable
 	size = nt * nxh * nyh * nzh;
 	value = new FLOAT[size];
-    Variable::redirect();
+	Variable::redirect();
 
 	// make PatchVariable
 	for (int p = 0; p < ntiles; p++) {
 		tile.push_back(Variable::sub(ntilex, ntiley, p));
-		tile.back().set_shift_index(shift1d, shift2d, shift3d);
-		//tile.back().redirect();
+		tile[p].set_shift_index(shift1d, shift2d, shift3d);
+		tile[p].slice();
 	}
 
 	redirect();
-
-	return *this;
 }
 
-PatchVariable& PatchVariable::unmake() {
+void PatchVariable::unmake() {
 	//std::cout << "PatchVariable unmake" << std::endl;
-	if (spec & abstract)
-		return *this;
+	if (spec & abstract) return;
 	// unmake Grid
 	Grid::unmake();
 
 	// unmake PatchGrid
 	PatchGrid::tile.clear();
-    PatchGrid::redirect();
+	PatchGrid::redirect();
 
 	// unmake Variable
-    delete[] value;
-    Variable::redirect();
+	delete[] value;
+	Variable::redirect();
 
 	// unmake PatchVariable
 	tile.clear();
 	redirect();
-
-	return *this;
 }
 
-PatchVariable& PatchVariable::redirect() {
-	if (spec & abstract)
-		return *this;
+void PatchVariable::redirect() {
+	if (spec & abstract) return;
 	for (int p = 0; p < ntiles; p++) {
 		int i = p % ntilex;
 		int j = p / ntilex;
 		tile[p].value = value + i * tile[p].nx + j * tile[p].ny * shift1d;
 	}
-
-	return *this;
 }
 
 std::string PatchVariable::head_info() const {
-    std::string result;
-    char buf[100];
+	std::string result;
+	char buf[100];
 
-    result = "name          : " + name + " (" + long_name + ", " + units + ")\n";
+	result = "name          : " + name + " (" + long_name + ", " + units
+			+ ")\n";
 	sprintf(buf, "%-14s: %d x %d = %d\n", "tiles", ntilex, ntiley, ntiles);
 	result += buf;
-    result += Grid::head_info();
+	result += Grid::head_info();
 
-
-    return result;
+	return result;
 }

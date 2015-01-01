@@ -84,13 +84,6 @@ public:
 	nzh; /**< nz + 2 * nh */
 
 protected:
-	int shift1d, /**< index shift in first dimension,
-	 usually shift1d = nxh */
-	shift2d, /**< index shift in first two dimension,
-	 usually shift2d = nxh * nyh*/
-	shift3d; /**< index shift in first 3 dimension,
-	 usually shift3d = nxh * nyh * nzh*/
-
 	GridSpec spec; /**< specifics of the grid **/
 
 	/*BoundaryType boundary;  a 6-bytes binary number that
@@ -124,23 +117,17 @@ public:
 	/**
 	 * allocate the memory in the grid
 	 */
-	virtual Grid& make();
+	virtual void make();
 
 	/**
 	 * deallocate the memory in the grid
 	 */
-	virtual Grid& unmake();
+	virtual void unmake();
 
 	/**
 	 * return an abstract subgrid of the current grid.
 	 */
 	Grid sub(int, int, int) const;
-
-	void set_shift_index(int s1, int s2, int s3) {
-		shift1d = s1;
-		shift2d = s2;
-		shift3d = s3;
-	}
 
     void set_boundary(std::array<int, 6> b){
         boundary = b;
@@ -161,7 +148,7 @@ protected:
 	/**
 	 * redirect pointers in abstract object to zero
 	 */
-	virtual Grid& redirect();
+	virtual void redirect();
 
 };
 

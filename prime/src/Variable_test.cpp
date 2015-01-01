@@ -13,8 +13,8 @@ void test_variable() {
 	Grid grid(config);
 	Variable psi(grid, "psi", "stream_function", "m^2/s", prognostic);
 	Variable zeta(grid, "zeta", "vorticity", "1/s");
-	//cout << zeta << endl;
-	cout << zeta.make().clear_all() << endl;
+	zeta.make();
+	cout << zeta.clear_all() << endl;
 	psi.make();
 	psi.clear_all().set_random_int().save();
 	cout << psi << endl;
@@ -28,19 +28,12 @@ void test_variable() {
 void test_patchvariable() {
 	Configure config("name.lst");
 	PatchGrid grid(config);
-	//grid.split(2, 2);
-	cout << "aaa" << endl;
-	cout << grid << endl;
 	PatchVariable psi(grid, "psi", "stream_function", "m^2/s", prognostic);
-	//PatchVariable zeta(grid, "zeta", "vorticity", "1/s");
-	psi.make().clear_all().set_random_int();
+	psi.make();
+	psi.clear_all().set_random_int();
 
 	cout << psi << endl;
-	cout << "bb" << endl;
 	cout << static_cast<Variable>(psi) << endl;
-	cout << "cc" << endl;
-	cout << psi << endl;
-	cout << "dd" << endl;
 	psi.split(2,2);
 	psi.clear_all().set_random_int();
 	psi[0].save();
@@ -54,7 +47,8 @@ void test_subpatchvariable() {
 	Configure config("name.lst");
 	PatchGrid grid(config);
 	PatchVariable psi(grid, "psi", "stream_function", "m/s", prognostic);
-	psi.make().clear_all().set_random_int();
+	psi.make();
+	psi.clear_all().set_random_int();
 	// Variable must make() before split
 	psi.split(1, 2);
 	psi[0].save();

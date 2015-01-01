@@ -56,16 +56,16 @@ public:
 
 	PatchGrid& operator=(const PatchGrid&);
 
-	PatchGrid& make();
+	void make();
 
-	PatchGrid& unmake();
+	void unmake();
 
 	/**
 	 * split a grid into multiple tiles, you can call this function
 	 * any time and any where in the program because it will only adjust
 	 * the pointer and will not allocate/reallocate new arrays.
 	 */
-	virtual PatchGrid& split(int, int);
+	void split(int, int);
 
 	/**
 	 * accessing tiles
@@ -81,7 +81,7 @@ public:
 	std::string head_info() const;
 
 protected:
-	PatchGrid& redirect();
+	void redirect();
 
 
 };
