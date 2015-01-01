@@ -31,7 +31,7 @@ enum GridSpec {
 
 template<class STREAM>
 STREAM &operator<<(STREAM &os, GridSpec vt) {
-	os << "gridSpec      : |";
+	os << "gridspec      : |";
 	if (vt & abstract)
 		os << "abstract|";
 	else

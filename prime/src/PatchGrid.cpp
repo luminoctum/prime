@@ -17,6 +17,8 @@ PatchGrid::PatchGrid(const Grid& grid) :
 
 PatchGrid::PatchGrid(const PatchGrid& pg) :
 		Grid(pg), ntilex(pg.ntilex), ntiley(pg.ntiley), ntiles(pg.ntiles) {
+    //std::cout << "PatchGrid copy constructor" << std::endl;
+    //std::cout << pg.nx << " " << pg.ny << std::endl;
 }
 
 PatchGrid::PatchGrid(const Configure& config, GridSpec gs) :

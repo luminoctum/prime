@@ -29,7 +29,23 @@ DistGrid::DistGrid(const PatchGrid &grid, const MPI_Comm& _comm) :
 
 	PatchGrid::operator=(
 			grid.sub(nprocs[0], nprocs[1], coordinate[0] + coordinate[1] * nprocs[0]));
-	make();
+}
+
+std::string DistGrid::head_info() const{
+	std::string result;
+	char buf[100];
+
+	sprintf(buf, "%-14s: %d x %d = %d\n", "processors", nprocs[0], nprocs[1], totalprocs);
+	result = buf;
+	sprintf(buf, "%-14s: %d\n", "I am node", iamnode);
+	result += buf;
+	sprintf(buf, "%-14s: (%d, %d)\n", "coordinate", coordinate[0], coordinate[1]);
+	result += buf;
+	sprintf(buf, "%-14s: %d %d %d %d\n", "neighbour", neighbour[0], neighbour[1],
+			neighbour[2], neighbour[3]);
+	result += buf;
+	result += PatchGrid::head_info();
+	return result;
 }
 
 

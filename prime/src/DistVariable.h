@@ -16,18 +16,25 @@
  * communicated by MPI
  */
 class DistVariable: public DistGrid, public PatchVariable {
-    template<class STREAM>
-	friend STREAM &operator<<(STREAM &os, DistVariable &var){
-    	os << "-------------------DistVariable Information Begin-----------------"
-    			<< std::endl;
-    	for (int p = 0; p < var.ntiles; p++) {
-    		os << "Tile # " << p << ": " << std::endl << var.tile[p] << std::endl;
-    	}
-    	os << "-------------------DistVariable Information End-----------------"
-    			<< std::endl;
+	template<class STREAM>
+	friend STREAM &operator<<(STREAM &os, DistVariable &var) {
+		os
+				<< "-------------------DistVariable Information Begin-----------------"
+				<< std::endl;
+		os << var.head_info();
+		if (~var.spec & abstract) for (int p = 0; p < var.ntiles; p++) {
+			os << "Tile # " << p << ": " << std::endl;
+			os << var.tile[p];
+		}
+		os
+				<< "--------------------DistVariable Information End------------------"
+				<< std::endl;
 
-    	return os;
-    }
+		return os;
+	}
+protected:
+    MPI_Datatype coldata;
+    MPI_Status status;
 
 public:
 	DistVariable();
@@ -35,10 +42,9 @@ public:
 	DistVariable(const DistGrid&, std::string = "", std::string = "",
 			std::string = "", GridSpec = abstract);
 
-	DistVariable& communicate();
+	void communicate();
 
-protected:
-    std::string head_info() const;
+	std::string head_info() const;
 };
 
 #endif /* DISTVARIABLE_H_ */

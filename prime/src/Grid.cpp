@@ -149,6 +149,8 @@ void Grid::unmake() {
 }
 
 Grid Grid::sub(int tx, int ty, int p) const {
+    //std::cout << tx << " " << ty << " " << p << std::endl;
+    //std::cout << nx << " " << ny << std::endl;
 	if ((tx < 1) | (tx > nx) | (ty < 1) | (ty > ny) | (p < 0)
 			| (p >= tx * ty)) {
 		std::cerr

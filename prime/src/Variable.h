@@ -40,7 +40,7 @@ class Variable: public virtual Grid {
 public:
 	FLOAT *value; /**< variable value */
 
-//protected:
+protected:
 	int cur, /**< current storage of time slice */
 	size, /**< total number of elements in value, size of an abstract variable is 0 */
 	offset, /**< offset value used to access value at different time storage */
