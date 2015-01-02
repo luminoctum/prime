@@ -33,7 +33,7 @@ class DistVariable: public DistGrid, public PatchVariable {
 		return os;
 	}
 protected:
-    MPI_Datatype coldata;
+    MPI_Datatype stride_t;
     MPI_Status status;
 
 public:

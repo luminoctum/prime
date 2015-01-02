@@ -51,11 +51,12 @@ int main(int argc, char *argv[]) {
 	psi.make();
     psi.split(2,2);
 	psi.clear_all().set_random_int();
+    for (int j = 0; j < psi.ny; j++)
+        for (int i = 0; i < psi.nx; i++)
+            psi(i, j) = (rank + 1) * psi(i, j);
 	psi.communicate();
 
-	std::cout << "finished" << std::endl;
-
-    
+	//cout << "finished" << endl;
 
     ofstream output;
     sprintf(filename, "output-%d.txt", rank);
