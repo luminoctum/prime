@@ -1,20 +1,23 @@
-#! /bin/bash -f
+#! /bin/csh -f
 #PBS -l nodes=4 
-#PBS -l walltime=12:00:00 
+#PBS -l walltime=00:30:00 
 #PBS -N prime
 #PBS -o out.$PBS_JOBID
 #PBS -e err.$PBS_JOBID
 #PBS -S /bin/bash
 #PBS -V 
-#PBS -q default
+#PBS -q debug
 
 # WRF directories
-exp_dir=$HOME/prime/Debug
+set debug_dir = $HOME/git/prime/prime/Debug
 
 # change the working directory (default is the current directory)
-run_name=first_test
-run_dir=$exp_dir/$run_name
+set exe_name = prime
+set inp_name = name.lst
+
 cd $PBS_O_WORKDIR
+cp $debug_dir/$exe_name ./
+cp $debug_dir/$inp_name ./
 echo Working directory is $PBS_O_WORKDIR
 
 # write PBS information
@@ -24,7 +27,10 @@ echo Time submitted: `date`
 
 # MPI information
 echo MPI USED: `which mpirun`
-NPROCS=`wc -l < $PBS_NODEFILE`
+set NPROCS = `wc -l < $PBS_NODEFILE`
 echo This job has allocated $NPROCS cpus
 
+source /etc/profile.d/modules.csh
+module load gcc
+module load mvapich2/gcc
 mpirun -np $NPROCS -machinefile $PBS_NODEFILE ./prime
