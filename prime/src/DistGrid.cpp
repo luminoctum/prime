@@ -8,7 +8,7 @@
 #include "DistGrid.h"
 
 DistGrid::DistGrid() :
-		dimension(2), iamnode(0), totalprocs(0), nprocs { { 0, 0 } }, isperiodic {
+		dimension(2), iamnode(0), totalprocs(0), stride_x(0), stride_y(0), nprocs { { 0, 0 } }, isperiodic {
 				{ 0, 0 } }, coordinate { { 0, 0 } }, neighbour { { 0, 0, 0, 0 } }, comm(
 				0) {
 }
@@ -29,6 +29,9 @@ DistGrid::DistGrid(const PatchGrid &grid, const MPI_Comm& _comm) :
 
 	PatchGrid::operator=(
 			grid.sub(nprocs[0], nprocs[1], coordinate[0] + coordinate[1] * nprocs[0]));
+
+    stride_x = grid.nx / nprocs[0];
+    stride_y = grid.ny / nprocs[1];
 }
 
 std::string DistGrid::head_info() const{

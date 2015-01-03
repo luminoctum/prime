@@ -29,7 +29,9 @@ class DistGrid : public virtual PatchGrid {
 protected:
 	int dimension,
 	iamnode,
-	totalprocs;
+	totalprocs,
+    stride_x,
+    stride_y;
 
 	std::array<int, 2> nprocs,
 	isperiodic,
@@ -43,6 +45,22 @@ public:
 	DistGrid();
 
 	DistGrid(const PatchGrid&, const MPI_Comm&);
+
+    int get_num_procs() const {
+        return totalprocs;
+    };
+
+    int get_id() const {
+        return iamnode;
+    };
+
+    int get_global_x(int i) const {
+        return coordinate[0] * stride_x + i;
+    };
+
+    int get_global_y(int j) const {
+        return coordinate[1] * stride_y + j;
+    };
 
 	std::string head_info() const;
 

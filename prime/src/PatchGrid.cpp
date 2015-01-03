@@ -75,6 +75,7 @@ void PatchGrid::split(int tx, int ty) {
 }
 
 void PatchGrid::redirect() {
+    // FIXME, this doesnot work if nx, ny changes
 	if (~spec & abstract) for (int j = 0; j < ntiley; j++)
 		for (int i = 0; i < ntilex; i++) {
 			Grid &atile = tile[i + j * ntilex];

@@ -59,7 +59,7 @@ CPP_DEPS += \
 src/%.o: ../src/%.cpp
 	@echo 'Building file: $<'
 	@echo 'Invoking: Cross G++ Compiler'
-	mpic++ -D__GXX_EXPERIMENTAL_CXX0X__ -I/opt/mpich2/gnu/include -O0 -g3 -Wall -c -fmessage-length=0 -std=c++0x -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -o "$@" "$<"
+	mpic++ -D__GXX_EXPERIMENTAL_CXX0X__ -I/opt/mpich2/gnu/include -O0 -g3 -Wall -c -fmessage-length=0 -std=c++0x -fopenmp -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -o "$@" "$<"
 	@echo 'Finished building: $<'
 	@echo ' '
 
