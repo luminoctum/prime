@@ -58,6 +58,8 @@ public:
 
 	void unmake();
 
+    void split(int, int);
+
 	inline const Variable& operator[](int p) const {
 		return tile[p];
 	}

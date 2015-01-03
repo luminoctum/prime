@@ -12,7 +12,7 @@
 #include "Configure.h"
 #include "Halo.h"
 #include "DistVariable.h"
-#include "multithreading_test.cpp"
+#include "MultithreadingTest.cpp"
 using namespace std;
 
 
@@ -63,7 +63,7 @@ int main(int argc, char *argv[]) {
     //test.single_thread();
     //test.multi_thread();
     //test.multi_core();
-    //test.multi_thread_core();
+    test.multi_thread_core();
 
 	MPI_Finalize();
 

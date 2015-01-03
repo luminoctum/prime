@@ -53,6 +53,7 @@ public:
     void single_thread(){
         psi.clear_all().set_random_int();
         psi_t.clear_all();
+        psi.save();
         output << psi << std::endl;
         laplace(psi, psi_t);
         output << psi_t << std::endl;
@@ -94,9 +95,10 @@ public:
         Variable temp(domain);
         temp.make();
         int num_of_threads = 4;
-        psi.split(2, 2); psi_t.split(2, 2);
+        //psi.split(2, 2); psi_t.split(2, 2);
         temp.clear_all().set_random_int();
         psi.clear_all(); psi_t.clear_all();
+        psi.split(2, 2); psi_t.split(2, 2);
 
         for (int j = 0; j < psi.ny; j++)
             for (int i = 0; i < psi.nx; i++)

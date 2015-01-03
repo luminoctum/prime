@@ -83,6 +83,30 @@ void PatchVariable::unmake() {
 	redirect();
 }
 
+void PatchVariable::split(int tx, int ty) {
+    ntilex = tx;
+    ntiley = ty;
+    ntiles = tx * ty;
+    if (~spec & abstract) {
+        // redirect PatchGrid
+        PatchGrid::tile.clear();
+        for (int p = 0; p < ntiles; p++)
+            PatchGrid::tile.push_back(Grid::sub(ntilex, ntiley, p));
+        PatchGrid::redirect();
+
+        // redirect PatchVariable
+        tile.clear();
+        for (int p = 0; p < ntiles; p++) {
+            tile.push_back(Variable::sub(ntilex, ntiley, p));
+            tile[p].set_shift_index(shift1d, shift2d, shift3d);
+            tile[p].slice();
+        }
+        redirect();
+    } else {
+        redirect();
+    }
+}
+
 void PatchVariable::redirect() {
 	if (spec & abstract) return;
 	for (int p = 0; p < ntiles; p++) {

@@ -44,7 +44,7 @@ all: prime
 prime: $(OBJS) $(USER_OBJS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: Cross G++ Linker'
-	mpic++ -L/opt/mpich2/gnu/lib -o "prime" $(OBJS) $(USER_OBJS) $(LIBS)
+	mpic++ -L/opt/mpich2/gnu/lib -fopenmp -o "prime" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 

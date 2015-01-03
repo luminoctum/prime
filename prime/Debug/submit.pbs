@@ -1,0 +1,30 @@
+#! /bin/bash -f
+#PBS -l nodes=4 
+#PBS -l walltime=12:00:00 
+#PBS -N prime
+#PBS -o out.$PBS_JOBID
+#PBS -e err.$PBS_JOBID
+#PBS -S /bin/bash
+#PBS -V 
+#PBS -q default
+
+# WRF directories
+exp_dir=$HOME/prime/Debug
+
+# change the working directory (default is the current directory)
+run_name=first_test
+run_dir=$exp_dir/$run_name
+cd $PBS_O_WORKDIR
+echo Working directory is $PBS_O_WORKDIR
+
+# write PBS information
+echo This job runs on the following processors:
+echo `cat $PBS_NODEFILE`
+echo Time submitted: `date`
+
+# MPI information
+echo MPI USED: `which mpirun`
+NPROCS=`wc -l < $PBS_NODEFILE`
+echo This job has allocated $NPROCS cpus
+
+mpirun -np $NPROCS -machinefile $PBS_NODEFILE ./prime

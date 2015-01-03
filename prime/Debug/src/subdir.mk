@@ -17,7 +17,7 @@ CPP_SRCS += \
 ../src/Variable.cpp \
 ../src/Variable_test.cpp \
 ../src/boundary.cpp \
-../src/multithreading_test.cpp \
+../src/MultithreadingTest.cpp \
 ../src/prime.cpp 
 
 OBJS += \
@@ -34,7 +34,7 @@ OBJS += \
 ./src/Variable.o \
 ./src/Variable_test.o \
 ./src/boundary.o \
-./src/multithreading_test.o \
+./src/MultithreadingTest.o \
 ./src/prime.o 
 
 CPP_DEPS += \
@@ -51,7 +51,7 @@ CPP_DEPS += \
 ./src/Variable.d \
 ./src/Variable_test.d \
 ./src/boundary.d \
-./src/multithreading_test.d \
+./src/MultithreadingTest.d \
 ./src/prime.d 
 
 
