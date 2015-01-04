@@ -12,12 +12,12 @@ CPP_SRCS += \
 ../src/Grid_test.cpp \
 ../src/Halo.cpp \
 ../src/Halo_test.cpp \
+../src/MultithreadingTest.cpp \
 ../src/PatchGrid.cpp \
 ../src/PatchVariable.cpp \
 ../src/Variable.cpp \
 ../src/Variable_test.cpp \
 ../src/boundary.cpp \
-../src/MultithreadingTest.cpp \
 ../src/prime.cpp 
 
 OBJS += \
@@ -29,12 +29,12 @@ OBJS += \
 ./src/Grid_test.o \
 ./src/Halo.o \
 ./src/Halo_test.o \
+./src/MultithreadingTest.o \
 ./src/PatchGrid.o \
 ./src/PatchVariable.o \
 ./src/Variable.o \
 ./src/Variable_test.o \
 ./src/boundary.o \
-./src/MultithreadingTest.o \
 ./src/prime.o 
 
 CPP_DEPS += \
@@ -46,12 +46,12 @@ CPP_DEPS += \
 ./src/Grid_test.d \
 ./src/Halo.d \
 ./src/Halo_test.d \
+./src/MultithreadingTest.d \
 ./src/PatchGrid.d \
 ./src/PatchVariable.d \
 ./src/Variable.d \
 ./src/Variable_test.d \
 ./src/boundary.d \
-./src/MultithreadingTest.d \
 ./src/prime.d 
 
 
