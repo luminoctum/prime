@@ -12,12 +12,17 @@
 #include "DistVariable.h"
 
 class FFTVariable: public DistVariable {
-protected:
+public:
 	FLOAT *f_value;
-	fftw_plan *plan;
+
+protected:
+	fftw_plan *plan_forward;
+	fftw_plan *plan_backward;
 
 public:
 	FFTVariable();
+
+	FFTVariable(const FFTVariable&);
 
 	FFTVariable(const DistGrid&, std::string = "", std::string = "",
 			std::string = "", GridSpec = abstract);
@@ -29,6 +34,8 @@ public:
 	void unmake();
 
     void fft();
+
+    void ifft();
 
 protected:
 	void redirect();

@@ -17,6 +17,8 @@ CPP_SRCS += \
 ../src/MultithreadingTest.cpp \
 ../src/PatchGrid.cpp \
 ../src/PatchVariable.cpp \
+../src/PoissonSolver.cpp \
+../src/PoissonSolverTest.cpp \
 ../src/Variable.cpp \
 ../src/Variable_test.cpp \
 ../src/boundary.cpp \
@@ -37,6 +39,8 @@ OBJS += \
 ./src/MultithreadingTest.o \
 ./src/PatchGrid.o \
 ./src/PatchVariable.o \
+./src/PoissonSolver.o \
+./src/PoissonSolverTest.o \
 ./src/Variable.o \
 ./src/Variable_test.o \
 ./src/boundary.o \
@@ -57,6 +61,8 @@ CPP_DEPS += \
 ./src/MultithreadingTest.d \
 ./src/PatchGrid.d \
 ./src/PatchVariable.d \
+./src/PoissonSolver.d \
+./src/PoissonSolverTest.d \
 ./src/Variable.d \
 ./src/Variable_test.d \
 ./src/boundary.d \
