@@ -28,6 +28,9 @@ public:
 
 	void unmake();
 
+    void fft();
+
+protected:
 	void redirect();
 };
 

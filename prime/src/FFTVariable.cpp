@@ -12,7 +12,7 @@ FFTVariable::FFTVariable() : f_value(0), plan(0) {
 
 FFTVariable::FFTVariable(const DistGrid& grid, std::string _name,
 		std::string _long_name, std::string _units, GridSpec _spec) :
-		DistVariable(grid, _name, _long_name, _units, _spec) {
+		Grid(grid), PatchGrid(grid), DistVariable(grid, _name, _long_name, _units, _spec) {
 	redirect();
 }
 
@@ -40,7 +40,7 @@ void FFTVariable::make() {
 
 	// make FFTVariable
 	f_value = new FLOAT[nx * nyh * nzh];
-	plan = (fftw_plan*)malloc(nyh * sizeof(fftw_plan));
+    plan = new fftw_plan[nyh];
 	for (int j = 0; j < nyh; j++)
 		plan[j] = fftw_plan_r2r_1d(nx, value + nh + j * nxh, f_value + j * nx,
 				FFTW_R2HC, FFTW_ESTIMATE);
@@ -48,27 +48,30 @@ void FFTVariable::make() {
 }
 
 void FFTVariable::unmake() {
-	// unmake Grid
-	Grid::unmake();
+    if (spec & abstract) return;
 
-	// unmake PatchGrid
-	PatchGrid::tile.clear();
-	PatchGrid::redirect();
-
-	// unmake Variable
-	delete[] value;
-	Variable::redirect();
-
-	// unmake PatchVariable
-	PatchVariable::tile.clear();
-	PatchVariable::redirect();
-
-	// unmake FFTVariable
-	delete[] f_value;
+	//std::cout << "unmake FFTVariable" << std::endl;
 	for (int j = 0; j < nyh; j++)
 		fftw_destroy_plan(plan[j]);
-	free(plan);
-	redirect();
+    delete[] plan;
+	delete[] f_value;
+
+	//std::cout << "unmake PatchVariable" << std::endl;
+	PatchVariable::tile.clear();
+
+	//std::cout << "unmake Variable" << std::endl;
+	delete[] value;
+
+	//std::cout << "unmake PatchGrid" << std::endl;
+	PatchGrid::tile.clear();
+
+	//std::cout << "unmake Grid" << std::endl;
+	Grid::unmake();
+
+	PatchGrid::redirect();
+	Variable::redirect();
+	PatchVariable::redirect();
+    redirect();
 }
 
 void FFTVariable::redirect() {
@@ -76,5 +79,10 @@ void FFTVariable::redirect() {
 		f_value = 0;
 		plan = 0;
 	}
+}
+
+void FFTVariable::fft() {
+    for (int j = 0; j < nyh; j++)
+        fftw_execute(plan[j]);
 }
 

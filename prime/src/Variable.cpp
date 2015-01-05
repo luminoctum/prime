@@ -161,6 +161,7 @@ void Variable::set_shift_index(int s1, int s2, int s3) {
 }
 
 Variable& Variable::slice(int t) {
+    //std::cerr << nt << std::endl;
 	if (t >= nt) {
 		std::cerr << "indicated time slice larger than maximum time slice"
 				<< std::endl;

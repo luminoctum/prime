@@ -43,6 +43,7 @@ int main(int argc, char *argv[]) {
     //test.multi_thread_core();
 
 	FFTVariableTest test(comm);
+    test.do_fft();
 
 	MPI_Finalize();
 	return 0;
