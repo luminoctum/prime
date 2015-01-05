@@ -114,7 +114,7 @@ public:
 
 	std::string head_info() const;
 
-	std::string value_info() const;
+	virtual std::string value_info() const;
 
 protected:
 	void redirect();

@@ -37,6 +37,8 @@ public:
 
     void ifft();
 
+    std::string value_info() const;
+
 protected:
 	void redirect();
 };

@@ -7,16 +7,16 @@
 
 #include "PoissonSolver.h"
 
-PoissonSolver::PoissonSolver() : rank(0), diag(0), stretch(0) {
+PoissonSolver::PoissonSolver() : mode(0), rank(0), diag(0), stretch(0) {
 }
 
 PoissonSolver::PoissonSolver(const PoissonSolver& solver) :
-	rank(solver.rank), stretch(solver.stretch){
+	mode(solver.mode), rank(solver.rank), stretch(solver.stretch){
 	diag = new FLOAT[rank];
 }
 
-PoissonSolver::PoissonSolver(int _rank, int _stretch) :
-		rank(_rank), stretch(_stretch) {
+PoissonSolver::PoissonSolver(int _mode, int _rank, int _stretch) :
+		mode(_mode), rank(_rank), stretch(_stretch) {
 	diag = new FLOAT[rank];
 }
 
@@ -25,9 +25,10 @@ PoissonSolver::~PoissonSolver() {
 }
 
 PoissonSolver& PoissonSolver::operator=(const PoissonSolver& solver) {
+    mode = solver.mode;
 	rank = solver.rank;
-	diag = solver.diag;
 	stretch = solver.stretch;
+	diag = solver.diag;
 	delete[] diag;
 	diag = new FLOAT[rank];
 
@@ -36,17 +37,17 @@ PoissonSolver& PoissonSolver::operator=(const PoissonSolver& solver) {
 
 void PoissonSolver::operator()(const FFTVariable& var, FFTVariable& result) {
 	FLOAT m;
-	for (int k = 0; k < var.nx; k++){
+	for (int k = 0; k < mode; k++){
 		for (int i = 0; i < rank; i++)
-			diag[i] = 2. * cos(2. * PI * i / rank) - 4. - stretch;
+			diag[i] = 2. * cos(2. * PI * k / mode) - 4. - stretch;
 		for (int i = 1; i < rank; i++) {
 			m = 1. / diag[i - 1];
 			diag[i] = diag[i] - m;
-			var.f_value[i] = var.f_value[i] - m * var.f_value[i - 1];
+			var.f_value[k + i * mode] = var.f_value[k + i * mode] - m * var.f_value[k + (i - 1) * mode];
 		};
-		result.f_value[rank - 1] = var.f_value[rank - 1] / diag[rank - 1];
-		for (long i = rank - 2; i >= 0; i--)
-			result.f_value[i] = (var.f_value[i] - var.f_value[i + 1]) / diag[i];
+		result.f_value[k + (rank - 1) * mode] = var.f_value[k + (rank - 1) * mode] / diag[rank - 1];
+		for (int i = rank - 2; i >= 0; i--)
+			result.f_value[k + i * mode] = (var.f_value[k + i * mode] - var.f_value[k + (i + 1) * mode]) / diag[i];
 	}
 	result.ifft();
 }

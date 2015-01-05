@@ -43,8 +43,11 @@ public:
         psi.clear_all().set_random_int();
 
         output << psi << std::endl;
+
         psi.fft();
-        output << psi << std::endl;
+        output << (Variable&)psi << std::endl;
+        psi.ifft();
+        output << (Variable&)psi << std::endl;
     }
 
 	void run(){
