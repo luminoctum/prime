@@ -21,7 +21,7 @@
  */
 class PatchVariable: public virtual PatchGrid, public Variable {
 	template<class STREAM>
-	friend STREAM &operator<<(STREAM &os, PatchVariable &var) {
+	friend STREAM &operator<<(STREAM &os, const PatchVariable &var) {
 		os
 				<< "-------------------PatchVariable Information Begin-----------------"
 				<< std::endl;
