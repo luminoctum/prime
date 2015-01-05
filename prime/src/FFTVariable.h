@@ -13,7 +13,7 @@
 
 class FFTVariable: public DistVariable {
 public:
-	FLOAT *f_value;
+	FLOAT *fvalue;
 
 protected:
 	fftw_plan *plan_forward;

@@ -42,11 +42,11 @@ void PoissonSolver::operator()(const FFTVariable& var, FFTVariable& result) {
 		for (int i = 1; i < rank; i++) {
 			m = 1. / diag[i - 1];
 			diag[i] = diag[i] - m;
-			var.f_value[i] = var.f_value[i] - m * var.f_value[i - 1];
+			var.fvalue[i] = var.fvalue[i] - m * var.fvalue[i - 1];
 		};
-		result.f_value[rank - 1] = var.f_value[rank - 1] / diag[rank - 1];
+		result.fvalue[rank - 1] = var.fvalue[rank - 1] / diag[rank - 1];
 		for (long i = rank - 2; i >= 0; i--)
-			result.f_value[i] = (var.f_value[i] - var.f_value[i + 1]) / diag[i];
+			result.fvalue[i] = (var.fvalue[i] - var.fvalue[i + 1]) / diag[i];
 	}
 	result.ifft();
 }

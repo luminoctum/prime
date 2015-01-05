@@ -7,7 +7,7 @@
 
 #include "FFTVariable.h"
 
-FFTVariable::FFTVariable() : f_value(0), plan_forward(0), plan_backward(0) {
+FFTVariable::FFTVariable() : fvalue(0), plan_forward(0), plan_backward(0) {
 }
 
 FFTVariable::FFTVariable(const DistGrid& grid, std::string _name,
@@ -45,13 +45,13 @@ void FFTVariable::make() {
 	PatchVariable::redirect();
 
 	// make FFTVariable
-	f_value = new FLOAT[nx * nyh * nzh];
+	fvalue = new FLOAT[nx * nyh * nzh];
     plan_forward = new fftw_plan[nyh];
     plan_backward = new fftw_plan[nyh];
 	for (int j = 0; j < nyh; j++) {
-		plan_forward[j] = fftw_plan_r2r_1d(nx, value + nh + j * nxh, f_value + j * nx,
+		plan_forward[j] = fftw_plan_r2r_1d(nx, value + nh + j * nxh, fvalue + j * nx,
 				FFTW_R2HC, FFTW_ESTIMATE);
-		plan_backward[j] = fftw_plan_r2r_1d(nx, f_value + j * nx, value + nh + j * nxh,
+		plan_backward[j] = fftw_plan_r2r_1d(nx, fvalue + j * nx, value + nh + j * nxh,
 				FFTW_HC2R, FFTW_ESTIMATE);
 	}
 	redirect();
@@ -67,7 +67,7 @@ void FFTVariable::unmake() {
 	}
 	delete[] plan_backward;
     delete[] plan_forward;
-	delete[] f_value;
+	delete[] fvalue;
 
 	//std::cout << "unmake PatchVariable" << std::endl;
 	PatchVariable::tile.clear();
@@ -89,7 +89,7 @@ void FFTVariable::unmake() {
 
 void FFTVariable::redirect() {
 	if (spec & abstract) {
-		f_value = 0;
+		fvalue = 0;
 		plan_forward = 0;
 		plan_backward = 0;
 	}
