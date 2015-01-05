@@ -4,7 +4,8 @@ src/prime.d: ../src/prime.cpp /opt/mpich2/gnu/include/mpi.h \
  ../src/Halo.h ../src/boundary.h ../src/Variable.h ../src/helper.h \
  ../src/Grid.h ../src/DistVariable.h ../src/DistGrid.h ../src/PatchGrid.h \
  ../src/PatchVariable.h ../src/MultithreadingTest.cpp \
- ../src/FFTVariableTest.cpp ../src/FFTVariable.h
+ ../src/FFTVariableTest.cpp ../src/FFTVariable.h \
+ ../src/PoissonSolverTest.cpp ../src/PoissonSolver.h
 
 /opt/mpich2/gnu/include/mpi.h:
 
@@ -41,3 +42,7 @@ src/prime.d: ../src/prime.cpp /opt/mpich2/gnu/include/mpi.h \
 ../src/FFTVariableTest.cpp:
 
 ../src/FFTVariable.h:
+
+../src/PoissonSolverTest.cpp:
+
+../src/PoissonSolver.h:

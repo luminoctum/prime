@@ -11,7 +11,7 @@
 
 class PoissonSolver {
 protected:
-	int mode, rank;
+	int mode, rank, halo;
 	FLOAT *diag, stretch;
 
 public:
@@ -19,7 +19,7 @@ public:
 
 	PoissonSolver(const PoissonSolver&);
 
-	PoissonSolver(int, int, int = 0);
+	PoissonSolver(int, int, int, int = 0);
 
 	virtual ~PoissonSolver();
 

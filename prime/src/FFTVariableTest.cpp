@@ -8,6 +8,7 @@
 #include <mpi.h>
 #include <fstream>
 #include "FFTVariable.h"
+#include "Halo.h"
 
 class FFTVariableTest {
 public:
@@ -16,6 +17,7 @@ public:
 	MPI_Comm		comm;
 	DistGrid		grid;
 	FFTVariable		psi, psi_t;
+    Halo            halo;
 	std::string		filename;
 	std::ofstream	output;
 
@@ -39,7 +41,7 @@ public:
 		output.close();
 	}
 
-    void do_fft(){
+    void run(){
         psi.clear_all().set_random_int();
 
         output << psi << std::endl;
@@ -49,7 +51,4 @@ public:
         psi.ifft();
         output << (Variable&)psi << std::endl;
     }
-
-	void run(){
-	}
 };

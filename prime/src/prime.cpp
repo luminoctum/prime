@@ -14,6 +14,7 @@
 #include "DistVariable.h"
 #include "MultithreadingTest.cpp"
 #include "FFTVariableTest.cpp"
+#include "PoissonSolverTest.cpp"
 using namespace std;
 
 
@@ -42,8 +43,11 @@ int main(int argc, char *argv[]) {
     //test.multi_core();
     //test.multi_thread_core();
 
-	FFTVariableTest test(comm);
-    test.do_fft();
+	//FFTVariableTest test(comm);
+    //test.run();
+    
+    PoissonSolverTest test(comm);
+    test.run();
 
 	MPI_Finalize();
 	return 0;

@@ -62,7 +62,7 @@ Grid::Grid(const Configure& config, GridSpec gs) :
 	if (lattop == 90.)
 		spec |= isnpole;
 
-	boundary = { {1,2,4,5,0,0}};
+	boundary = { {1,1,0,0,0,0}};
 }
 
 Grid::~Grid() {

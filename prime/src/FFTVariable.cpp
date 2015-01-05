@@ -45,16 +45,13 @@ void FFTVariable::make() {
 	PatchVariable::redirect();
 
 	// make FFTVariable
-	//fvalue = new FLOAT[nx * nyh * nzh];
-	fvalue = new FLOAT[nxh * nyh * nzh];
+	fvalue = new FLOAT[nx * nyh * nzh];
     plan_forward = new fftw_plan[nyh];
     plan_backward = new fftw_plan[nyh];
 	for (int j = 0; j < nyh; j++) {
-		//plan_forward[j] = fftw_plan_r2r_1d(nx, value + nh + j * nxh, fvalue + j * nx,
-		plan_forward[j] = fftw_plan_r2r_1d(nxh, value + j * nxh, fvalue + j * nxh,
+		plan_forward[j] = fftw_plan_r2r_1d(nx, value + nh + j * nxh, fvalue + j * nx,
 				FFTW_R2HC, FFTW_ESTIMATE);
-		//plan_backward[j] = fftw_plan_r2r_1d(nx, fvalue + j * nx, value + nh + j * nxh,
-		plan_backward[j] = fftw_plan_r2r_1d(nxh, fvalue + j * nxh, value + j * nxh,
+		plan_backward[j] = fftw_plan_r2r_1d(nx, fvalue + j * nx, value + nh + j * nxh,
 				FFTW_HC2R, FFTW_ESTIMATE);
 	}
 	redirect();
@@ -107,10 +104,8 @@ void FFTVariable::ifft() {
 	for (int j = 0; j < nyh; j++)
 		fftw_execute(plan_backward[j]);
     for (int j = -nh; j < ny + nh; j++)
-        //for (int i = 0; i < nx; i++)
-        //    (*this)(i, j) = (*this)(i, j) / nx;
-        for (int i = -nh; i < nx + nh; i++)
-            (*this)(i, j) = (*this)(i, j) / nxh;
+        for (int i = 0; i < nx; i++)
+            (*this)(i, j) = (*this)(i, j) / nx;
 }
 
 std::string FFTVariable::value_info() const {
@@ -121,25 +116,20 @@ std::string FFTVariable::value_info() const {
     result += Variable::value_info();
     sprintf(buf, "\nFFT :  |");
     result += buf;
-    //for (int i = 0; i < nx; i++) {
-    //    sprintf(buf, "%8d", i);
-    for (int i = 0; i < nxh; i++) {
-        sprintf(buf, "%8d", i - nh);
+    for (int i = 0; i < nx; i++) {
+        sprintf(buf, "%8d", i);
         result += buf;
     }
     result += "\n";
-    //for (int i = -1; i < nx; i++)
-    for (int i = -1; i < nxh; i++)
+    for (int i = -1; i < nx; i++)
         result += "--------";
     result += "\n";
     for (int j = 0; j < nyh; j++) {
         sprintf(buf, "%7d|", j - nh);
         result += buf;
-        //for (int i = 0; i < nx; i++) {
-        for (int i = 0; i < nxh; i++) {
+        for (int i = 0; i < nx; i++) {
             std::stringstream ss;
-            //ss << std::setw(8) << fvalue[i + j * nx];
-            ss << std::setw(8) << fvalue[i + j * nxh];
+            ss << std::setw(8) << fvalue[i + j * nx];
             result += ss.str();
         }
         result += "\n";
