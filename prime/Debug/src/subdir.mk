@@ -8,6 +8,8 @@ CPP_SRCS += \
 ../src/Configure_test.cpp \
 ../src/DistGrid.cpp \
 ../src/DistVariable.cpp \
+../src/FFTVariable.cpp \
+../src/FFTVariableTest.cpp \
 ../src/Grid.cpp \
 ../src/Grid_test.cpp \
 ../src/Halo.cpp \
@@ -18,6 +20,7 @@ CPP_SRCS += \
 ../src/Variable.cpp \
 ../src/Variable_test.cpp \
 ../src/boundary.cpp \
+../src/helper.cpp \
 ../src/prime.cpp 
 
 OBJS += \
@@ -25,6 +28,8 @@ OBJS += \
 ./src/Configure_test.o \
 ./src/DistGrid.o \
 ./src/DistVariable.o \
+./src/FFTVariable.o \
+./src/FFTVariableTest.o \
 ./src/Grid.o \
 ./src/Grid_test.o \
 ./src/Halo.o \
@@ -35,6 +40,7 @@ OBJS += \
 ./src/Variable.o \
 ./src/Variable_test.o \
 ./src/boundary.o \
+./src/helper.o \
 ./src/prime.o 
 
 CPP_DEPS += \
@@ -42,6 +48,8 @@ CPP_DEPS += \
 ./src/Configure_test.d \
 ./src/DistGrid.d \
 ./src/DistVariable.d \
+./src/FFTVariable.d \
+./src/FFTVariableTest.d \
 ./src/Grid.d \
 ./src/Grid_test.d \
 ./src/Halo.d \
@@ -52,6 +60,7 @@ CPP_DEPS += \
 ./src/Variable.d \
 ./src/Variable_test.d \
 ./src/boundary.d \
+./src/helper.d \
 ./src/prime.d 
 
 
@@ -59,7 +68,7 @@ CPP_DEPS += \
 src/%.o: ../src/%.cpp
 	@echo 'Building file: $<'
 	@echo 'Invoking: Cross G++ Compiler'
-	mpic++ -D__GXX_EXPERIMENTAL_CXX0X__ -I/opt/mpich2/gnu/include -O0 -g3 -Wall -c -fmessage-length=0 -std=c++0x -fopenmp -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -o "$@" "$<"
+	mpic++ -D__GXX_EXPERIMENTAL_CXX0X__ -I/opt/mpich2/gnu/include -O0 -g3 -Wall -c -fmessage-length=0 -std=c++0x -fopenmp -lm -lfftw3 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -o "$@" "$<"
 	@echo 'Finished building: $<'
 	@echo ' '
 
